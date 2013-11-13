@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2010 Prometheus Consulting
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+    http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<?xml-stylesheet type="text/xsl" href="MaduraHTML.xsl"?>
+<doc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xsi:noNamespaceSchemaLocation="http://maduradocs.googlecode.com/files/MaduraDoc_5.0.5.xsd">
+	<title>
+		<MainTitle>MaduraDocs</MainTitle>
+		<SubTitle>User Guide</SubTitle>
+		<Author>Roger Parkinson</Author>
+		<Revision>$Revision: 36 $</Revision>
+		<image>logo.jpg</image>
+		<references>
+			<reference t="maduradocs" url="http://code.google.com/p/maduradocs/" />
+			<reference t="Apache Licence 2.0" url="http://www.apache.org/licenses/LICENSE-2.0" />
+			<reference t="XInclude" url="http://www.w3.org/TR/xinclude/" />
+			<reference t="maven" url="https://maven.apache.org/" />
+			<reference t="docbook" url="http://docbook.org/" />
+			<reference t="svnkit" url="http://www.svnkit.com/license.html" />
+			<reference t="slf4j" url="http://www.slf4j.org/license.html" />
+		</references>
+
+	</title>
+	<body>
+		<process-log/>
+		<process-references/>
+		<h1 t="What is MaduraDocs for?">
+		<p>MaduraDocs generates a PDF file from an XML source file. It is a maven<referenceLink t="maven"/> plugin, so it can be added to a 
+		maven project and the PDF will be generated as part of the build. The advantages of generating documents this way are:</p>
+		<list>
+		<le>You can store the source document in your source repository and control its versioning in the same way you do it for source
+		code, including comparing versions etc. This is not really possible for formats like Word and OpenOffice.</le>
+		<le>Because they are just XML documents in a source control system they can be edited by multiple people at the same time,
+		which often happens when a document needs to be reviewed by several people, and the changes merged efficiently.</le>
+		<le>Changes to the document can be tracked by source control, including commit comments, and these an be automatically
+		built into the document history which is tedious to manage otherwise.</le>
+		<le>Injecting things like the build number or version number into the document, changing company name etc, is easy to do
+		because they are injected as parameters.</le>
+		</list>
+		<p>It looks rather like DocBook<referenceLink t="docbook"/>, but it is different enough. You would not use both this and DocBook 
+		though, you would pick just one	of them.</p>
+		</h1>
+		<h1 t="Setting Up Your Project">
+		<p>Add this to your pom.xml file:</p>
+		<code><![CDATA[
+<plugin>
+	<groupId>nz.co.senanque</groupId>
+	<artifactId>maduradocs</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<executions>
+		<execution>
+			<goals>
+				<goal>pdf</goal>
+			</goals>
+		</execution>
+	</executions>
+</plugin>
+		]]></code>
+		<p>Adjust the version to the current one.</p>
+		<p>The first time you run a build after that some files will be created in the <courier>docs</courier> directory, specifically it
+		will create a file named after your artifact id with suffix xml. This is the file you will edit to
+		document your project and it is the source for the PDF file that is placed in <courier>target</courier>. The PDF will be regenerated with
+		each build.</p>
+		<p>There is a file called <courier>docs/images/logo.jpg</courier> which is a dummy logo file. You should replace this with your own
+		logo.</p>
+		<p>That is all you need to do. But there are some other things you might do.</p>
+		<p>The <courier>style.xsl</courier> defines a lot of things about the layout of the resulting PDF, including fonts and the way
+		the title page and footers are organised. It is fairly self documenting. You can adjust that to your own needs.</p>
+		<p>There are several image files in the <courier>docs/images</courier> directory and we already mentioned the logo file. The others
+		are <courier>note.png, rant.gif, warning.gif</courier>. These are used by several of the sidebar formats. You might want to replace them
+		with ones you like better.</p>
+		<p>And that really is all you need to do.</p>
+		</h1>
+		<h1 t="WYSIWYG">
+		<p>So how do you edit these XML documents? People are used to Word which allows them to see what the document 
+		looks like as they edit it. XML does not do this. Plus you have to remember a lot of tags. Is there a way to make this easier?</p>
+		<p>I'm going to argue soon that WSYWIG is not all that useful or easy, and we like it mostly out of habit. 
+		But we'll come back to that. You want to be able to see what the document looks like as you edit it. We can do that.</p>
+		<p>The trick is to include the reference to MaduraHTML.xsl in the XML heading of your document.</p>
+		<code><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="MaduraHTML.xsl"?>
+		]]></code>
+		<p>This allows you to open the XML file in an ordinary browser. The browser will run the xsl transformation and turn your XML file into HTML which 
+		it then displays. This sounds complicated and it is, but all you had to do was open	the file in a browser. You then see the document formatted. 
+		It is not in PDF and the specific format is different, but as we have seen, the specific output format may vary as you change the style.xsl file.
+		So this is a usable approximation. In fact it is so usable you could consider delivering the files like this from a web site.</p>
+		<p>It is also instant. You save the file in your XML editor, hit the refresh on the browser and you see the changes. You may prefer a dual monitor 
+		setup for this to work best, but it is very close to WYSIWYG.</p>
+		<p>Now I will argue that it is better.</p>
+		<p>The problem with WSYWIG editors is that you have to think about formatting the document as you write it. This is wrong. The format is a decision that 
+		comes later, perhaps made by someone else, perhaps revised later by someone else again. When writing a document you are concerned with <emph>content</emph> 
+		not format. Writing in XML allows you to largely ignore format.</p>
+		<p>I still have not covered the mechanics of editing the XML. How do you remember what tags you should use?</p>
+		<p>This is addressed two ways. First, the actual tags are kept simple. There are not very many of them, in contrast to other systems with a similar approach. 
+		The temptation is to add a lot of tags, but you don't need very many really when you don't have to think about format issues.</p>
+		<p>Second, use a smart editor that knows about XML and also about XSD. MaduraDoc.xsd holds the tag definitions and if you use an XML/XSD aware editor it will 
+		check the syntax of your file as you type as well as offer helpful prompts suggesting the tags available to you. The XML editor bundled in Eclipse does this 
+		very well. It also has a spell check function.</p>
+		<p>Both of these features (displaying in the browser and describing the tag definitions) depend on the MaduraDoc.xsd being visible and MaduraHTML.xsl 
+		being placed in the same directory as your XML file. The xsd file is easily found on the internet by the schema location near the top
+		of the file and the MaduraHTML.xsl is already placed in your <courier>docs</courier> directory.</p>
+		<p>As a final nail in the coffin of WSYWIG I need to counter the argument 'I already know how to use Word'.</p>
+		<p>Maybe you know Word 2000. Do you know Word 2007? What about Word 2010? The user interface is very different and somewhat awful. I haven't bothered 
+		to learn it. In fairness I have to say Open Office (and Libre Office) has so far kept their UI fairly stable.</p>
+		<p>You may know Word, but what do you know about document management? I don't want to learn a separate tool for document management when I already know
+		how to use my source control system. Plus I already have the infrastructure	built for that.</p>
+		<p>Last of all, I can point out that major software producers such as Spring <referenceLink t="Spring Framework"/> don't use Word either. They often 
+		use a product called Docbook which, as already noted, is similar to Maduradocs.</p>
+		</h1>
+		<h1 t="Tags">
+			<p>In describing the tags I refer to differences between how it is represented in the PDF and the HTML. Bear in mind that <emph>every</emph> behaviour
+			is determined by the XSL files, which you can modify. So while this is out of the box behaviour, it is quite fluid.</p>
+			<h2 t="Title">
+		<p>Near the top of the xml document you will find something like this:</p>
+		<code><![CDATA[
+<doc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xsi:noNamespaceSchemaLocation="http://maduradocs.googlecode.com/files/MaduraDoc_5.0.5.xsd">
+	<title>
+		<MainTitle>My project</MainTitle>
+		<SubTitle>User Guide</SubTitle>
+		<Author>My Name</Author>
+		<Revision>$Revision: 1$</Revision>
+		<image>logo.jpg</image>
+		<references>
+			<!-- List of references -->
+			<reference t="maduradocs" url="http://code.google.com/p/maduradocs/" />
+			<reference t="Apache Licence 2.0" url="http://www.apache.org/licenses/LICENSE-2.0" />
+			<reference t="XInclude" url="http://www.w3.org/TR/xinclude/" />
+			<reference t="Spring Framework" url="http://www.springsource.org/" />
+		</references>
+	</title>
+	<body>
+	...
+		]]></code>
+		<p>If you had your pom file set up correctly the project and your name will be already edited in there, but you might need to change it.
+		For example the name will be your user name and you might want your full name. Don't change the Revision tag. Source control will look after that for us.</p>
+		<p>You can add references to this section as shown. These sections are options and described in more detail in <sectionLink t="Using References"/>.</p>
+		<p>The Logo is optional. Specify a jpg, png or gif. If present then it will be scaled to 6cm wide and
+		a proportional height, and placed after the subtitle on the first page.</p>
+		<p>The whole layout of the first page, as well as layouts generally, can be customised by modifying style.xsl which
+		you will find has been copied to your docs directory after your first pdf generation.</p>
+			</h2>
+			<h2 t="Body">
+				<p>Most of the document lives in the body.</p>
+				<p>
+					You have headings h1, h2, h3, h4 and h5. They all take an attribute 't' so
+					they look like this:
+				</p>
+				<code><![CDATA[
+<h1 t="My Heading">
+	<h2 t="My subheading">
+		<p>Some text...</p>
+	</h2>
+</h1>
+		]]></code>
+				<p>
+					Notice how the headings are nested one inside the other. This is
+					important. There are equivalent 'a' tags for making appendices (a1, a2, a3, a4, a5).
+				</p>
+				<p>Inside any header you can have the following tags:</p>
+				<list>
+					<ll name="p">Paragraph</ll>
+					<ll name="list">
+						List. Use subtags le for bulleted entries, ll for named entries
+						and ln for numbered entries
+					</ll>
+					<ll name="img">Image. More on this in <sectionLink t="img"/>.</ll>
+					<ll name="code">
+						Code. Use this to surround blocks of code, examples etc. If your code uses
+						greater-than or less-than symbols enclose it in CDATA like this:
+<code>
+&lt;code&gt;&lt;![CDATA[
+...sample code
+]]&gt;&lt;/code&gt;
+</code>
+					</ll>
+					<ll name="rant">
+						This is not rendered to PDF so you can let rip even in external
+						documents.
+					</ll>
+					<ll name="table">More information on tables in <sectionLink t="table"/>.</ll>
+					<ll name="comment">
+						Adds a comment. Use this for commenting on someone's document. You
+						need to be one of the listed reviewers. Comments are not rendered
+						in the PDF.
+					</ll>
+					<ll name="note">
+						This is a note, see example below.
+					</ll>
+					<ll name="warning">
+						This is a warning note, see example below.
+					</ll>
+				</list>
+				<p>This is a sample note.</p>
+				<note>
+				Notes normally fit inside a narrower box and have a graphic alongside them. You can customise the
+				graphic by replacing the 'note.png' file with your own image. The text style is determined by the
+				'notes' section in the style.xsl file.
+				</note>
+				<p>This is a sample warning.</p>
+				<warning>
+				Warnings normally fit inside a narrower box and have a graphic alongside them
+				all of which can be customised, of course. 
+				</warning>
+				<p>Some of these require more detail:</p>
+				<h3 t="img">
+					<code><![CDATA[
+<img href="Layers.jpg" width="450px">Layered Structure</img>
+					]]></code>
+					<p>
+						This creates an image from the jpg file. It scales it to make its
+						width 450px and adjusts the height proportionately. 450px is about right for the width of an A4 page.
+						Make sure you use px rather than some other unit because the others don't all work.
+						It centers the on the page and creates a caption using the name and also adds a
+						<emph>figure (n)</emph>
+						. You can specify height instead of width if you want. You can refer to the figure in your text using a figureLink tag
+						like this:
+					</p>
+					<code><![CDATA[
+...see <figureLink t="Layered Structure"/> which shows....
+					]]></code>
+					<p>
+						Best practice always uses the figure link rather than 'see the
+						figure below' or above or whatever. People move text around and
+						forget to edit the references. The figureLink will always be
+						correct.
+					</p>
+					<p>File types can be jpg, bmp, png, svg and anything else supported by FOP. Units must be in cm, nothing else works.</p>
+				</h3>
+				<h3 t="table">
+					<p>This is a table:</p>
+					<code><![CDATA[
+<table width="8cm">
+	<tw>3cm</tw><tw>3cm</tw>
+	<tr>
+		<th>A</th>
+		<th>B</th>
+	</tr>
+	<tr>
+		<td>cellA1</td>
+		<td>cellB1</td>
+	</tr>
+	<tr>
+		<td>cellA21</td>
+		<td>cellB2</td>
+	</tr>
+</table>
+		]]></code>
+					<p>
+						It looks a lot like an HTML table. The differences are the <courier>tw</courier> tags
+						which indicate the width of each column (used by PDF, not HTML)
+						and the th tags which indicate table headers. <courier>th</courier> is a valid HTML
+						tag but is often not used. The <courier>th</courier> cells have a different style. 
+						The maximum sensible width on an A4 portrait is 15.5cm. Make sure
+						you use cm rather than some other unit (and, yes, this is different to what you
+						use for <courier>img</courier>). 
+					</p>
+					<p>
+						Getting the widths right is usually a trial an error exercise depending on the
+						text in the table and where it finds room for line breaks. This only matters
+						in PDF, not HTML. So you can find yourself generating the PDFs several times
+						to get them right. Sometimes the simplest approach is to generate the PDF, print it out
+						and go over it with a ruler to find the right lengths. This is the one time
+						you might wish for WSYWIG, but it isn't usually very complicated.
+					</p>
+					<p>
+						Tables have optional captions. Just include the <courier>t</courier> attribute to the <courier>table</courier> tag. You
+						can have a &lt;tableReference/&gt; in the text to refer to a captioned table.
+					</p>
+					<p>
+						There is a special case of tables where the document is just one table. Put your table tag in
+						the body, and make it the only thing there. The document will be rendered with the usual first page etc (in PDF)
+						but no table of contents or bookmarks.
+					</p>
+					<p>If you want to right align a cell or a header add <courier>align="right"</courier> to the <courier>th</courier> or <courier>td</courier> tag.</p>
+				</h3>
+				<h3 t="Inside a paragraph">
+					<p>
+						Inside a paragraph (or a table cell) you can have the following
+						tags:
+					</p>
+					<list>
+						<ll name="emph">Makes the text italic</ll>
+						<ll name="bold">Makes the text bold</ll>
+						<ll name="courier">Makes the text courier</ll>
+						<ll name="Year">Inserts the current year</ll>
+						<ll name="ProductVersion">Inserts the value of the ProductVersion parameter passed to the Ant Script</ll>
+						<ll name="footnote">Creates a footnote. These are rendered as popups in html and bottom-of-page notes in PDF
+						<footnote>This is an example of a footnote.</footnote></ll>
+						<ll name="figureLink">See <sectionLink t="img"/>.</ll>
+						<ll name="sectionLink">Creates a link to another heading tag.</ll>
+						<ll name="tableLink">Creates a link to a table. Only tables that have captions can be linked to.
+						That means they must have the t attribute.</ll>
+						<ll name="referenceLink">refers to one of the references in the references section. See <sectionLink t="Using References"/>.</ll>
+						<ll name="comment">Adds a comment. Use this for commenting on someone's document. You need to be one of the listed reviewers. Comments are not rendered in the PDF.</ll>
+					</list>
+					<p>Year and ProductVersion don't work in HTML. They need to be passed as arguments to the PDF renderer.
+						<footnote>This is an example of another footnote.</footnote>
+					</p>
+					<p>The headings and the table tag can include <courier>landscape="true"</courier> which puts that section or table into landscape mode.</p>
+				</h3>
+			</h2>
+		</h1>
+		<h1 t="Using Change Log">
+		<p>The change log is a summary of the changes to your document. You may be doing this already and maintaining a log manually, more likely you
+		forget to maintain it which makes your documents look less than professional.</p>
+		<p>MaduraDocs gives you the ability to build the change log from the commit comments on the xml file. It works differently depending on the source 
+		control system (SCM) you are using. We currently support Subversion and GitHub. Other SCMs can be added if they have a useable api. These
+		assume you have an SCM entry in your pom file including a url. The url must have either 'svn' or 'github' in it somewhere. It we can't work out the
+		SCM details we continue without error. Commits with empty comments are not retrieved.</p>
+		<p>To actually include the change log you need to put a <courier>&lt;process-log/&gt;</courier> tag in your document at the place you want
+		the log to display. This tag creates a heading like an <courier>&lt;h1/&gt;</courier> tag and it will appear in the table of coments.</p>
+		<p>Some SCMs support the <courier>$Revision: $</courier> syntax and updates the document revision with each commit. Subversion needs a little
+		setup for this to work properly. You need to tell Subversion to set the keyword 'Revision' on the document.</p>
+		</h1>
+		<h1 t="Using Reviewers">
+		<p>You can include the Reviewers tag in the title section and a Reviewer tag for each reviewer.</p>
+		<p>Like the change log these do not have to actually appear in the document but if you use the <courier>&lt;process-reviewers/&gt;</courier> tag it will generate a list of
+		the reviewers. This tag creates a heading like an <courier>&lt;h1/&gt;</courier> tag.</p>
+		<p>The idea is that reviewers can look over your document, add comment tags, then commit. They edit the <courier>complete</courier> attribute on their tag to show
+		they have finished. This means you can easily see who has completed their review and who has not.</p> 
+		</h1>
+		<h1 t="Using References">
+		<p>You can include the References tag in the title section and a Reference tag for each external reference your document uses.</p>
+		<p>Like the change log these do not have to actually appear in the document but if you use the <courier>&lt;process-references/&gt;</courier> tag it will generate a list of
+		the references. This tag creates a heading like an <courier>&lt;h1/&gt;</courier> tag.</p>
+		<p>In your document you can use the referenceLink tag to refer to the references.</p>
+		<code><![CDATA[
+<references>
+  <reference t="Subversion" url="http://subversion.tigris.org/" />
+  <reference t="Eclipse" url="http://www.eclipse.org/" />
+  <reference t="My Own Document" url="MyOwnDocument.pdf" />
+</references>
+		]]></code>
+		<p>The references section itself can contain</p>
+		<list>
+		<le>A URL to some web page, as the first two examples show. References in the text to this will create a hyperlink to the target page.</le>
+		<le>A URL to a pdf. This assumes the target pdf is in the same base directory as the current document and hyperlinks work on that basis. The base directory
+		can be a URL, so you can put your docs on a web site and they will cross refer successfully. You might also point to a subdirectory using, say 'mysubdirectory/MyOwnDocument.pdf'.</le>
+		<le>The URL can be omitted. Use this for a reference to hard copy documents that support no hyperlink. In this case references in the text to this document create a hyperlink to the list of references in
+		the current document, which means, of course, that you really ought to include a references section in your current document.</le>
+		</list>
+		<p>To refer to these in your document use the <courier>&lt;referenceLink/&gt;</courier> tag like this:</p>
+		<code><![CDATA[
+... <referenceLink t="Subversion"/>
+		]]></code>
+		<p>This will create the hyperlink in your document.</p>		
+		</h1>
+		<h1 t="Advanced Topics">
+		<h2 t="Includes">
+		<p>You can include other files into your main file if you want, so you can have a multi-file document.</p>
+		<p>Use the include tag: &lt;xi:include href="myfile.xml"/&gt; for this. It does not seem to like finding the files in any but the current directory
+		and the fallback option seems to not work. For more information see <referenceLink t="XInclude"/>.</p>
+		</h2>
+		<h2 t="Styles">
+		<p>The format of the PDF is determined by the contents of the style.xsl file. Once you do your first PDF run you will find a copy of this file
+		in your /docs directory. This file acts like a CSS file in that you can pick fonts and sizes etc. You can also customise the page layouts
+		including the headers, footers and the initial pages.</p>
+		<p>If you make changes to this file it will not be overwritten on the next PDF run. The logic only copies it if it does not already exist.</p>
+		<p>You can also replace the following image files you will also find in your /docs directory.</p>
+		<list>
+		<le>note.png</le>
+		<le>rant.gif</le>
+		<le>warning.gif</le>
+		</list>
+		<p>You can also change the MaduraPDF.xsl file, but this might be overwritten if you upgrade to a new version of MaduraDocs. Similarly you can
+		change MaduraHTML.xsl. Again you may lose changes if you upgrade.</p> 
+		</h2>
+		<h2 t="Multiple Files">
+		<p>Sometimes you want to generate multiple pdf files in your build, or maybe you just want to change the name of the output file. Just adjust
+		your pom file like this:</p>
+		<code><![CDATA[
+<plugin>
+	<groupId>nz.co.senanque</groupId>
+	<artifactId>maduradocs</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<executions>
+		<execution>
+			<goals>
+				<goal>pdf</goal>
+			</goals>
+		</execution>
+	</executions>
+	<configuration>
+		<sourceDir>src/test/resources</sourceDir>
+		<sourceDoc>testdoc.xml,testdoc2.xml</sourceDoc>
+	</configuration>
+</plugin>
+		]]></code>
+		<p>In this case we gave two xml files to be processed. The two resulting pdf files will be placed in the target directory with names like 
+		testdoc-1.0.pdf and testdoc2-1.0.pdf. We also changed the source directory, which is optional. If you do change the source directory then you
+		should make sure the style.xsl, MaduraHTLM.xsl and the images are copied to it.</p>
+		<p>To change the output directory just add a targetDir entry under the configuration.</p>
+		</h2>
+		</h1>
+		<a1 t="Licence">
+			<p>The code specific to MaduraDocs is licenced under the Apache Licence 2.0 <referenceLink t="Apache Licence 2.0"/>.</p>
+			<p>The dependent products have the following licences:</p>
+			<list>
+			<ll name="avalon-framework">Apache Software License, Version 2.0</ll>
+			<ll name="apache commons">Apache Software License, Version 2.0</ll>
+			<ll name="apache fop">Apache Software License, Version 2.0</ll>
+			<ll name="maven">Apache Software License, Version 2.0</ll>
+			<ll name="svnkit">TMate Open Source License (with dual licensing option) <referenceLink t="svnkit"/></ll>
+			<ll name="slf4j">SLF4j license <referenceLink t="slf4j"/></ll>
+			<ll name="slf4j-mojo">Apache Software License, Version 2.0</ll>
+			<ll name="retrofit">Apache Software License, Version 2.0</ll>
+			</list> 
+		</a1>
+		<a1 t="Release Notes">
+		<table width="12cm">
+			<tw>12cm</tw>
+		<tr>
+			<th>6.0.0</th>
+		</tr>
+        <tr>
+            <td>Pretty much a complete rewrite from the previous ant-based version to a maven plugin. In the process the
+            conversion functions from Word and Libre Office, which never worked very well and were never used, were
+            removed. The new version also makes it easy to have multiple documents generated from one project and
+            also is much easier to set up.</td>
+        </tr>
+		<tr>
+			<th>5.0.6</th>
+		</tr>
+        <tr>
+            <td>Migrate to Java 7.</td>
+        </tr>
+        <tr>
+            <td>Modified XSD to allow code tags inside list elements.</td>
+        </tr>
+        <tr>
+            <th>5.0.5</th>
+        </tr>
+		<tr>
+			<td>Highlight bad cross references.</td>
+		</tr>
+		<tr>
+			<td>Added alignment option to table cells, including headers.</td>
+		</tr>
+		<tr>
+			<td>Documented that image sizes need to be cm rather than pt or other units.</td>
+		</tr>
+		<tr>
+			<th>5.0.4</th>
+		</tr>
+		<tr>
+			<td>Fixed a problem with SVN logs and change log</td>
+		</tr>
+		<tr>
+			<td>Fixed a problem in the XSD file (emph was not allowed in a td)</td>
+		</tr>
+		<tr>
+			<th>5.0.3</th>
+		</tr>
+		<tr>
+			<td>Added version announcement</td>
+		</tr>
+		<tr>
+			<th>5.0.2</th>
+		</tr>
+		<tr>
+			<td>just build tidying, no functional changes.</td>
+		</tr>
+		<tr>
+			<th>5.0.1</th>
+		</tr>
+		<tr>
+			<td>just build tidying, no functional changes.</td>
+		</tr>
+		<tr>
+			<th>5.0</th>
+		</tr>
+		<tr>
+			<td>Updated doc to include logo.</td>
+		</tr>
+		<tr>
+			<td>Modified svn.* properties to make them unlikely to collide with other properties of the same name. This
+			is the change that makes this version not backwards compatible, hence the major revision number.</td>
+		</tr>
+		<tr>
+			<td>Removed the ability to scale the logo image on the first page. If necessary this can be forced by a modification to the
+			style.xsl, but it can no longer be specified in the title section.</td>
+		</tr>
+		<tr>
+			<th>4.5</th>
+		</tr>
+		<tr>
+			<td>Reworked the build processes to make it work with ivy-roundup.</td>
+		</tr>
+		<tr>
+			<td>Documentation update.</td>
+		</tr>
+		<tr>
+			<th>4.4</th>
+		</tr>
+		<tr>
+			<td>Reworked the documentation.</td>
+		</tr>
+		<tr>
+			<td>Added EMF translation for migrating Word documents.</td>
+		</tr>
+		<tr>
+			<th>4.3</th>
+		</tr>
+		<tr>
+			<td>Documentation modified for references</td>
+		</tr>
+		<tr>
+			<th>4.2</th>
+		</tr>
+		<tr>
+			<td>Added translator for Word</td>
+		</tr>
+		<tr>
+			<td>Lots of other stuff</td>
+		</tr>
+		<tr>
+			<th>2.3</th>
+		</tr>
+		<tr>
+			<td>Added width to images</td>
+		</tr>
+		<tr>
+			<td>Fixed a parsing error relating to xi:include</td>
+		</tr>
+		<tr>
+			<td>logsample.txt had rubbish in it: fixed</td>
+		</tr>
+		<tr>
+			<td>pdf version of notes now looks nice (common.xsl)</td>
+		</tr>
+		<tr>
+			<td>Fixed a parsing error relating to xi:include</td>
+		</tr>
+		<tr>
+			<th>2.2</th>
+		</tr>
+		<tr>
+			<td>Allow single table in a doc instead of headers.</td>
+		</tr>
+		<tr>
+			<td>Suppress TOC processing if nothing in TOC.</td>
+		</tr>
+		<tr>
+			<th>2.1</th>
+		</tr>
+		<tr>
+			<td>Suppress copy of common.xsl if already there</td>
+		</tr>
+		<tr>
+			<th>2.0</th>
+		</tr>
+		<tr>
+			<td>Implemented fetching commit logs from SVN, but it needs properties defined externally (user, password etc) plus an svn client installed.</td>
+		</tr>
+		<tr>
+			<td>Tables are now all using the same attributes so they are consistent (includes reviewer table and commit logs)</td>
+		</tr>
+		</table>
+		</a1>
+		<a1 t="TODO">
+			<list>
+				<le>
+					Optional Sections. External flags can select or include certain
+					sections of the doc, used in PDF. No, can should be handled by custom
+					pre-processing the XML.<bold>discarded</bold>
+				</le>
+				<le>
+					Maybe a way to show whole sections with 'proposed feature' or similar.<bold>discarded</bold>
+				</le>
+				<le>
+					We need a way to indicate the doc is still a draft, ie should not be
+					rendered to PDF. Can do it by renaming the file, but is that smartest? Yes. <bold>discarded</bold>.
+					However note that if you keep drafts in a separate directory then you can change their format
+					so that pdfs are rendered with different styles including possibly a watermark saying 'draft'.
+				</le>
+				<le>
+					Side boxes with different style, eg warning, note etc <bold>done</bold>
+				</le>
+				<le>
+					Includes <bold>done</bold>
+				</le>
+				<le>
+					Conversion from Word <bold>done</bold>
+				</le>
+				<le>
+					Conversion from Open Office <bold>pending</bold>
+				</le>
+				<le>
+					Have the rendering phase announce its version number <bold>pending</bold>
+				</le>
+			</list>
+		</a1>
+	</body>
+
+</doc>
