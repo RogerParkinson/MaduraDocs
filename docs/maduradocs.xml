@@ -40,7 +40,7 @@
 		<process-references/>
 		<h1 t="What is MaduraDocs for?">
 		<p>MaduraDocs generates a PDF file from an XML source file. It is a maven<referenceLink t="maven"/> plugin, so it can be added to a 
-		maven project and the PDF will be generated as part of the build. The advantages of generating documents this way are:</p>
+		maven project and the PDF will be generated as part of the build (the package phase). The advantages of generating documents this way are:</p>
 		<list>
 		<le>You can store the source document in your source repository and control its versioning in the same way you do it for source
 		code, including comparing versions etc. This is not really possible for formats like Word and OpenOffice.</le>
@@ -70,7 +70,7 @@
 	</executions>
 </plugin>
 		]]></code>
-		<p>Adjust the version to the current one.</p>
+		<p>Remember to adjust the version number to the current one.</p>
 		<p>The first time you run a build after that some files will be created in the <courier>docs</courier> directory, specifically it
 		will create a file named after your artifact id with suffix xml. This is the file you will edit to
 		document your project and it is the source for the PDF file that is placed in <courier>target</courier>. The PDF will be regenerated with
