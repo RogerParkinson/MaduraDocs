@@ -69,6 +69,14 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 	private InputSource history=null;
 
 	/**
+	 * baseDir.
+	 * 
+	 * @parameter expression="${basedir}"
+	 * @readonly
+	 */
+	private String baseDir;
+
+	/**
 	 * userName.
 	 * 
 	 * @parameter expression="${user.name}"
@@ -232,8 +240,11 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 		
 //        String url = "https://maduradocs.googlecode.com/svn/trunk";
 //        String path = "src/MaduraDocs.xml";
+		
+		int l = getBaseDir().length();
+		String sourceSubDir = getSourceDir().substring(l+1);
 
-		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor(scmURL, baseName+".xml");
+		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor(scmURL, baseName+".xml",sourceSubDir);
 		history = historyExtractor.getHistory();
 		
 		File sourceFile = new File(getSourceDir()+File.separatorChar+baseName+".xml");
@@ -429,6 +440,14 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 
 	protected void setTargetDir(String targetDir) {
 		this.targetDir = targetDir;
+	}
+
+	protected String getBaseDir() {
+		return baseDir;
+	}
+
+	protected void setBaseDir(String baseDir) {
+		this.baseDir = baseDir;
 	}
 
 }

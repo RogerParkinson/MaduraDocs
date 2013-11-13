@@ -13,14 +13,14 @@ import java.util.StringTokenizer;
  */
 public class HistoryExtractorFactory {
 	
-	static HistoryExtractor getHistoryExtractor(String scmURL, String baseName) {
+	static HistoryExtractor getHistoryExtractor(String scmURL, String baseName, String subDir) {
 		
 		if (scmURL == null) {
 			return new HistoryExtractorNOOP();
 		}
 		if (scmURL.indexOf("svn") > -1) {
 			// assume it is SVN, takes the form: http://madura-rules.googlecode.com/svn/trunk
-			return new HistoryExtractorSVN(scmURL, baseName, null, null);
+			return new HistoryExtractorSVN(scmURL, subDir+baseName, null, null);
 		}
 		if (scmURL.indexOf("github") > -1) {
 			// assume it is github, takes the form: https://api.github.com/repos/RogerParkinson/HeartMonitor/commits?path=README.md
@@ -42,7 +42,7 @@ public class HistoryExtractorFactory {
 			StringTokenizer st = new StringTokenizer(urlQuery,"/");
 			String name = st.nextToken();
 			String repo = st.nextToken();
-			return new HistoryExtractorGitHub(urlString, baseName,name,repo);
+			return new HistoryExtractorGitHub(urlString, subDir+baseName,name,repo);
 		}
 		return new HistoryExtractorNOOP();
 	}

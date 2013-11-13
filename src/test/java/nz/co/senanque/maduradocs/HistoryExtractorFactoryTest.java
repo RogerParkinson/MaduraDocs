@@ -16,7 +16,7 @@ public class HistoryExtractorFactoryTest {
 
 	@Test @Ignore
 	public void testGetHistoryExtractorSVN() throws Exception {
-		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("https://maduradocs.googlecode.com/svn/trunk", "src/MaduraDocs.xml");
+		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("https://maduradocs.googlecode.com/svn/trunk", "MaduraDocs.xml", "/src/");
 		InputSource inputSource = historyExtractor.getHistory();
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
 		NodeList nodeList = doc.getDocumentElement().getChildNodes();
@@ -24,7 +24,7 @@ public class HistoryExtractorFactoryTest {
 	}
 	@Test @Ignore
 	public void testGetHistoryExtractorGitHub() throws Exception {
-		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("https://github.com/RogerParkinson/HeartMonitor", "README.md");
+		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("https://github.com/RogerParkinson/HeartMonitor", "README.md", "/");
 		InputSource inputSource = historyExtractor.getHistory();
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
 		NodeList nodeList = doc.getDocumentElement().getChildNodes();
