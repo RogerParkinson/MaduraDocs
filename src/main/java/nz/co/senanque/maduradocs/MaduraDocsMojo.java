@@ -59,7 +59,7 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 	private static final Logger log = LoggerFactory
 			.getLogger(MaduraDocsMojo.class);
 
-	private static final String SCHEMA_LOCATION = "http://maduradocs.googlecode.com/files/MaduraDoc_5.0.5.xsd";
+	private static final String SCHEMA_LOCATION = "http://central.maven.org/maven2/nz/co/senanque/maduradocs/6.0.0/maduradocs-6.0.0.xsd";
 
 	private String artifactId;
 	private String projectName;
