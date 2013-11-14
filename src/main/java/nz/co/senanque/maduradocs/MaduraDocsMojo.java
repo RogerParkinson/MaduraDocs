@@ -211,7 +211,8 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 			company="";
 			try {
 				company = project.getModel().getOrganization().getName();
-				scmURL = project.getModel().getScm().getUrl();
+//				scmURL = project.getModel().getScm().getUrl();
+				scmURL = project.getModel().getScm().getConnection();
 			} catch (Exception e1) {
 				company="Set Organization in POM file";
 			}
