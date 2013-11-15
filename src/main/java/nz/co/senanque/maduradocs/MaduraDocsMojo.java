@@ -61,7 +61,7 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 	private static final Logger log = LoggerFactory
 			.getLogger(MaduraDocsMojo.class);
 
-	private static final String SCHEMA_LOCATION = "http://oss.sonatype.org/content/repositories/releases/nz/co/senanque/maduradocs/{1}/maduradocs-{1}.xsd";
+	private static final String SCHEMA_LOCATION = "http://oss.sonatype.org/content/repositories/releases/nz/co/senanque/maduradocs/{0}/maduradocs-{0}.xsd";
 
 	private String artifactId;
 	private String projectName;
@@ -170,6 +170,7 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 		transformer.setParameter("product.name", projectName);
 		transformer.setParameter("user.name", getUserName());
 		transformer.setParameter("schema.location", MessageFormat.format(SCHEMA_LOCATION,pluginVersion));
+		this.getLog().info(transformer.getParameter("schema.location").toString());
 		
 		DocumentBuilderFactory spf = DocumentBuilderFactory.newInstance();
 		spf.setNamespaceAware(true);
@@ -202,7 +203,7 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 	}
 
 	private void loadPluginProperties() {
-		String path = "/META-INF/maven/nz/co/senanque/maduradocs/maduradocs/pom.properties";
+		String path = "/META-INF/maven/nz.co.senanque/maduradocs/pom.properties";
 		InputStream stream = getClass().getResourceAsStream(path);
 		Properties props = new Properties();
 		try {
@@ -214,7 +215,7 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 			return;
 		}
 		pluginVersion = props.get("version");
-		getLog().info("using plugin version "+pluginVersion);
+		getLog().info("using maduradocs plugin version "+pluginVersion);
 
 	}
 
