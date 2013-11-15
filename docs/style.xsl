@@ -281,7 +281,7 @@
 	<xsl:template name="PageFooter">
 		<fo:block xsl:use-attribute-sets="foot" space-before="0.1cm">
 			<fo:block><xsl:text>&#xA9;</xsl:text><xsl:value-of select="$Year"/><xsl:text> </xsl:text><xsl:value-of select="$Company"/></fo:block>
-			<fo:block><xsl:value-of select="/doc/title/SubTitle"/><xsl:text> </xsl:text><xsl:value-of select="$ProductVersion"/><xsl:text> </xsl:text><xsl:value-of select="$Build"/></fo:block>
+			<fo:block><xsl:value-of select="/doc/title/SubTitle"/><xsl:text> </xsl:text><xsl:value-of select="$ProductVersion"/><xsl:text> </xsl:text></fo:block>
 			<fo:block><xsl:text>- </xsl:text><fo:page-number/><xsl:text> -</xsl:text></fo:block>
 		</fo:block>
  	</xsl:template>
