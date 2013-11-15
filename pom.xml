@@ -5,8 +5,8 @@
 	<artifactId>maduradocs</artifactId>
 	<packaging>maven-plugin</packaging>
 	<version>6.0.0-SNAPSHOT</version>
-	<name>Madura Docs</name>
-	<url>https://github.com/RogerParkinson/MaduraDocs/</url>
+	<name>MaduraDocs</name>
+	<url>https://www.madurasoftware.com</url>
 	<licenses>
 		<license>
 			<name>Apache 2</name>
@@ -15,7 +15,7 @@
 		</license>
 	</licenses>
 	<issueManagement>
-		<system>Sourceforge Tracker</system>
+		<system>GitHub</system>
 		<url>https://github.com/RogerParkinson/MaduraDocs/issues</url>
 	</issueManagement>
 
@@ -23,17 +23,17 @@
 		<developer>
 			<id>roger</id>
 			<name>Roger J Parkinson</name>
-			<email>roger.parkinson35@gmail.com</email>
+			<email>roger.parkinson35 at gmail.com</email>
 			<timezone>GMT+12</timezone>
 			<roles>
 			</roles>
 		</developer>
 	</developers>
-  <scm>
-    <connection>scm:svn:https://github.com/RogerParkinson/MaduraDocs/trunk/</connection>
-    <developerConnection>scm:svn:https://github.com/RogerParkinson/MaduraDocs/trunk/</developerConnection>
-    <url>https://github.com/RogerParkinson/MaduraDocs/trunk/</url>
-  </scm>
+	<scm>
+		<connection>scm:svn:https://github.com/RogerParkinson/MaduraDocs/trunk/</connection>
+		<developerConnection>scm:svn:https://github.com/RogerParkinson/MaduraDocs/trunk/</developerConnection>
+		<url>https://github.com/RogerParkinson/MaduraDocs/trunk/</url>
+	</scm>
 
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
@@ -161,32 +161,32 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.5</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<id>attach-artifacts</id>
-						<goals>
-							<goal>attach-artifact</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<artifacts>
-						<artifact>
-							<file>${schema}</file>
-							<type>xsd</type>
-						</artifact>
-						<artifact>
-							<file>${pdf}</file>
-							<type>pdf</type>
-						</artifact>
-					</artifacts>
-				</configuration>
-			</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>1.5</version>
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<id>attach-artifacts</id>
+							<goals>
+								<goal>attach-artifact</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<artifacts>
+							<artifact>
+								<file>${schema}</file>
+								<type>xsd</type>
+							</artifact>
+							<artifact>
+								<file>${pdf}</file>
+								<type>pdf</type>
+							</artifact>
+						</artifacts>
+					</configuration>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-plugin-plugin</artifactId>
@@ -251,7 +251,7 @@
 				<plugin>
 					<groupId>nz.co.senanque</groupId>
 					<artifactId>maduradocs</artifactId>
-					<version>6.0.0</version>
+					<version>6.0.0-SNAPSHOT</version>
 					<executions>
 						<execution>
 							<goals>
@@ -331,6 +331,7 @@
 	</build>
 	<organization>
 		<name>Prometheus Consulting</name>
+		<url>www.madurasoftware.com</url>
 	</organization>
 	<description>MaduraDocs generates a PDF file from an XML source file. It is a maven plugin, so it can be added to a maven project and the PDF will be generated as part of the build. The advantages of generating documents this way are:
 
