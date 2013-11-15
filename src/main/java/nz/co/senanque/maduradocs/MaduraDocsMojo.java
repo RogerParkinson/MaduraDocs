@@ -11,8 +11,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -59,7 +61,7 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 	private static final Logger log = LoggerFactory
 			.getLogger(MaduraDocsMojo.class);
 
-	private static final String SCHEMA_LOCATION = "http://oss.sonatype.org/content/repositories/releases/nz/co/senanque/maduradocs/6.0.0/maduradocs-6.0.0.xsd";
+	private static final String SCHEMA_LOCATION = "http://oss.sonatype.org/content/repositories/releases/nz/co/senanque/maduradocs/{1}/maduradocs-{1}.xsd";
 
 	private String artifactId;
 	private String projectName;
@@ -117,6 +119,8 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 	 */
 	private String sourceDir;
 
+	private Object pluginVersion;
+
 	private void createNewSources(String baseName) {
 		File sourceDirectoryFile = new File(getSourceDir());
 		if (!sourceDirectoryFile.exists()) {
@@ -165,7 +169,7 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 
 		transformer.setParameter("product.name", projectName);
 		transformer.setParameter("user.name", getUserName());
-		transformer.setParameter("schema.location", SCHEMA_LOCATION);
+		transformer.setParameter("schema.location", MessageFormat.format(SCHEMA_LOCATION,pluginVersion));
 		
 		DocumentBuilderFactory spf = DocumentBuilderFactory.newInstance();
 		spf.setNamespaceAware(true);
@@ -197,9 +201,27 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 		}
 	}
 
+	private void loadPluginProperties() {
+		String path = "/META-INF/maven/nz/co/senanque/maduradocs/maduradocs/pom.properties";
+		InputStream stream = getClass().getResourceAsStream(path);
+		Properties props = new Properties();
+		try {
+			props.load(stream);
+		} catch (Exception e) {
+			getLog().info(
+					"could not open maduradocs properties file, so xsd location (based on version) might be incorrect");
+			pluginVersion = "0.0.0";
+			return;
+		}
+		pluginVersion = props.get("version");
+		getLog().info("using plugin version "+pluginVersion);
+
+	}
+
 	public void executeWithLogging() throws MojoExecutionException, MojoFailureException {
 		
 		getLog().info("===Starting document generation==");
+		loadPluginProperties();
 //		setSourceDir("target/docs1/");
 		if (getPluginContext() != null) {
 			MavenProject project = (MavenProject)getPluginContext().get("project");
