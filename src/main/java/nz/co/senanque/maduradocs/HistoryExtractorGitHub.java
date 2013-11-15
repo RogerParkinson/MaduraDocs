@@ -7,6 +7,8 @@ import java.io.StringReader;
 import java.util.List;
 
 import org.codehaus.plexus.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 
 import retrofit.RequestInterceptor;
@@ -19,6 +21,9 @@ import retrofit.http.Path;
  * 
  */
 public class HistoryExtractorGitHub implements HistoryExtractor {
+
+	private static final Logger log = LoggerFactory
+			.getLogger(HistoryExtractorGitHub.class);
 
 	private final String m_url;
 	private final String m_path;
@@ -106,19 +111,22 @@ public class HistoryExtractorGitHub implements HistoryExtractor {
 		// Create an instance of our GitHub API interface.
 		GitHub github = restAdapter.create(GitHub.class);
 
-		// Fetch and print a list of the contributors to this library.
-		List<CommitRecord> commits = github.commits(m_name,m_repo);
-		for (CommitRecord commitRecord : commits) {
-			if (StringUtils.isNotEmpty(commitRecord.getMessage())) {
-				sb.append("<logentry>");
-				sb.append("<author>").append(commitRecord.getAuthor())
-						.append("</author>");
-				sb.append("<date>").append(commitRecord.getDate().toString())
-						.append("</date>");
-				sb.append("<msg>").append(commitRecord.getMessage().replace('\n', ' '))
-						.append("</msg>");
-				sb.append("</logentry>");
+		try {
+			List<CommitRecord> commits = github.commits(m_name,m_repo);
+			for (CommitRecord commitRecord : commits) {
+				if (StringUtils.isNotEmpty(commitRecord.getMessage())) {
+					sb.append("<logentry>");
+					sb.append("<author>").append(commitRecord.getAuthor())
+							.append("</author>");
+					sb.append("<date>").append(commitRecord.getDate().toString())
+							.append("</date>");
+					sb.append("<msg>").append(commitRecord.getMessage().replace('\n', ' '))
+							.append("</msg>");
+					sb.append("</logentry>");
+				}
 			}
+		} catch (Exception e) {
+			log.warn("Failed to get Git history: ", e.getMessage());
 		}
 		sb.append("</log>");
 
