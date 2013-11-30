@@ -37,7 +37,15 @@
 									</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="Logo" type="xs:string" minOccurs="0">
+							<xs:element name="Logo" type="xs:string" minOccurs="0"> <!-- deprecated -->
+								<xs:annotation>
+									<xs:documentation>
+									The image is scaled and placed on the title page. 6cm wide and proportional height.
+									It is placed 4cm below the subtitle. All of this can be redefined by making your own style.xsl
+									</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="image" type="xs:string" minOccurs="0">
 								<xs:annotation>
 									<xs:documentation>
 									The image is scaled and placed on the title page. 6cm wide and proportional height.
@@ -310,7 +318,7 @@
 	<xs:complexType name="listEntryType" mixed="true">
 		<xs:complexContent>
 			<xs:extension base="pType">
-				<xs:choice maxOccurs="unbounded">
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
 					<xs:element name="list" type="listType">
 						<xs:annotation>
 							<xs:documentation>
