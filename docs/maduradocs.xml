@@ -426,6 +426,30 @@
 		<table width="12cm">
 			<tw>12cm</tw>
 		<tr>
+			<th>6.0.4</th>
+		</tr>
+        <tr>
+            <td>Minor fixes to XSD file for logo and lists.</td>
+        </tr>
+		<tr>
+			<th>6.0.3</th>
+		</tr>
+        <tr>
+            <td>Attempted release, didn't quite work.</td>
+        </tr>
+		<tr>
+			<th>6.0.2</th>
+		</tr>
+        <tr>
+            <td>Attempted release, didn't quite work.</td>
+        </tr>
+		<tr>
+			<th>6.0.1</th>
+		</tr>
+        <tr>
+            <td>Attempted release, didn't quite work.</td>
+        </tr>
+		<tr>
 			<th>6.0.0</th>
 		</tr>
         <tr>
