@@ -628,6 +628,9 @@
 				<le>
 					Have the rendering phase announce its version number <bold>pending</bold>
 				</le>
+				<le>
+					td should allow emph and courier, xsd issue only (see madura-objects docs)
+				</le>
 			</list>
 		</a1>
 	</body>
