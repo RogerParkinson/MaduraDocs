@@ -3,7 +3,7 @@
 	<groupId>nz.co.senanque</groupId>
 	<artifactId>maduradocs</artifactId>
 	<packaging>maven-plugin</packaging>
-	<version>6.0.5</version>
+	<version>6.0.6-SNAPSHOT</version>
 	<name>MaduraDocs</name>
 	<url>https://www.madurasoftware.com</url>
 	<licenses>
@@ -29,9 +29,9 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:svn:https://github.com/RogerParkinson/MaduraDocs/tags/maduradocs-6.0.5</connection>
-		<developerConnection>scm:svn:https://github.com/RogerParkinson/MaduraDocs/tags/maduradocs-6.0.5</developerConnection>
-		<url>https://github.com/RogerParkinson/MaduraDocs/tags/maduradocs-6.0.5</url>
+		<connection>scm:svn:https://github.com/RogerParkinson/MaduraDocs/trunk/</connection>
+		<developerConnection>scm:svn:https://github.com/RogerParkinson/MaduraDocs/trunk/</developerConnection>
+		<url>https://github.com/RogerParkinson/MaduraDocs/trunk/</url>
 	</scm>
 
 	<parent>
