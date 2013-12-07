@@ -98,7 +98,28 @@
 					position:fixed; color:blue; top:30px;
 					left:5px; width:170px; height:100%; 
 				}
-				img {display: block; margin-left:auto; margin-right:auto;text-align:center;}
+				img {
+					border-top-width: thin;
+					border-top-style: solid;
+					border-top-color: -moz-use-text-color;
+
+					border-bottom-width: thin;
+					border-bottom-style: solid;
+					border-bottom-color: -moz-use-text-color;
+
+					border-right-width: thin;
+					border-right-style: solid;
+					border-right-color: -moz-use-text-color;
+
+					border-left-width: thin;
+					border-left-style: solid;
+					border-left-color: -moz-use-text-color;
+
+
+					display: block; 
+					margin-left:auto; 
+					margin-right:auto;
+					text-align:center;}
 				p
 				{
 				}
