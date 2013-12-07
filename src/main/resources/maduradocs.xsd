@@ -169,7 +169,8 @@
 									</xs:documentation>
 								</xs:annotation>
 						</xs:element>
-						<xs:element name="td" minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="td" type="pType" minOccurs="0" maxOccurs="unbounded">
+						<!-- 
 							<xs:complexType mixed="true">
 								<xs:choice minOccurs="0" maxOccurs="unbounded">
 									<xs:element name="figureLink" type="figureLinkType">
@@ -246,7 +247,7 @@
 											</xs:documentation>
 										</xs:annotation>
 									</xs:element>
-									<xs:element name="note" type="noteType">
+									<xs:element name="note" type="pType">
 										<xs:annotation>
 											<xs:documentation>
 											Note block
@@ -285,6 +286,7 @@
 									</xs:element>
 								</xs:choice>
 							</xs:complexType>
+							 -->
 						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
@@ -384,21 +386,21 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="note" type="noteType">
+			<xs:element name="note" type="pType">
 				<xs:annotation>
 					<xs:documentation>
 					Note block
 					</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="warning" type="warningType">
+			<xs:element name="warning" type="pType">
 				<xs:annotation>
 					<xs:documentation>
 					Warning block
 					</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="rant" type="rantType">
+			<xs:element name="rant" type="pType">
 				<xs:annotation>
 					<xs:documentation>
 					Rant block, not included in PDF
@@ -613,7 +615,7 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="footnote" type="xs:string"/>
+			<xs:element name="footnote" type="pType"/>
 			<xs:element name="referenceLink" type="referenceLinkType">
 				<xs:annotation>
 					<xs:documentation>
