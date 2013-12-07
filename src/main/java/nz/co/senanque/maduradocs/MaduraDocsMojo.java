@@ -333,7 +333,7 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 			StreamSource xslStream = new StreamSource(xslFile);
 			Transformer transformer = factory.newTransformer(xslStream);
 
-			transformer.setParameter("ProductVersion", artifactId+"-"+version);
+			transformer.setParameter("ProductVersion", artifactId+"-"+stripSnapshot(version));
 			transformer.setParameter("Company", company);
 			transformer.setParameter("Year", getYear());
 			transformer.setParameter("BaseDir", getSourceDir()+File.separatorChar);
@@ -389,6 +389,14 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 			throw new RuntimeException(e);
 		}
 		getLog().info("===End document generation==");
+	}
+	
+	private String stripSnapshot(String v) {
+		int i = v.indexOf("-SNAPSHOT");
+		if (i > -1) {
+			return v.substring(0,i);
+		}
+		return v;
 	}
 
 	private void attachLogInformation(DocumentBuilder parser, Document sourceDocument,
