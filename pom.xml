@@ -241,20 +241,6 @@
 						</execution>
 					</executions>
 				</plugin>
-<!-- 
-				<plugin>
-					<groupId>nz.co.senanque</groupId>
-					<artifactId>maduradocs</artifactId>
-					<version>6.0.1-SNAPSHOT</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>pdf</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
- -->
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>properties-maven-plugin</artifactId>
