@@ -29,21 +29,36 @@ public class HistoryExtractorFactoryTest {
 	
 	// tests are marked ignored because they depend on external stability which we cannot guarantee.
 
-	@Test @Ignore
+	@Test @Ignore // this one doesn't work but I no longer care about googlecode
 	public void testGetHistoryExtractorSVN() throws Exception {
-		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("https://maduradocs.googlecode.com/svn/trunk", "MaduraDocs.xml", "/src/");
+		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("scm:svn:https://maduradocs.googlecode.com/svn/trunk", "MaduraDocs.xml", "/src/");
 		InputSource inputSource = historyExtractor.getHistory();
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
 		NodeList nodeList = doc.getDocumentElement().getChildNodes();
 		assertEquals(6,nodeList.getLength());
 	}
-	@Test @Ignore
-	public void testGetHistoryExtractorGitHub() throws Exception {
-		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("https://github.com/RogerParkinson/HeartMonitor", "README.md", "/");
+	@Test
+	public void testGetHistoryExtractorGitHubSVN() throws Exception {
+		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("scm:svn:https://github.com/RogerParkinson/MaduraDocs/trunk/", "README.md", "/");
 		InputSource inputSource = historyExtractor.getHistory();
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
 		NodeList nodeList = doc.getDocumentElement().getChildNodes();
-		assertEquals(2,nodeList.getLength());
+		assertEquals(37,nodeList.getLength());
 	}
-
+	@Test
+	public void testGetHistoryExtractorGitHubGIT() throws Exception {
+		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("scm:git:git@github.com:RogerParkinson/MaduraDocs.git", "README.md", "/");
+		InputSource inputSource = historyExtractor.getHistory();
+		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
+		NodeList nodeList = doc.getDocumentElement().getChildNodes();
+		assertEquals(1,nodeList.getLength());
+	}
+	@Test
+	public void testGetHistoryExtractorGitHubGIT2() throws Exception {
+		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("scm:git:git@github.com:RogerParkinson/madura-bundles.git", "madura-bundle.xml", "/madura-bundle/docs/");
+		InputSource inputSource = historyExtractor.getHistory();
+		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
+		NodeList nodeList = doc.getDocumentElement().getChildNodes();
+		assertEquals(1,nodeList.getLength());
+	}
 }

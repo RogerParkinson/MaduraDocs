@@ -22,6 +22,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.StringTokenizer;
 
+import org.codehaus.plexus.util.StringUtils;
+
 /**
  * @author roger
  *
@@ -33,34 +35,35 @@ public class HistoryExtractorFactory {
 		String repoType = getRepoType(scmURL);
 		String bareURL = getBareURL(scmURL);
 		
-		if (repoType == null || bareURL == null) {
+		if (StringUtils.isEmpty(scmURL)) {
 			return new HistoryExtractorNOOP();
 		}
-		if (repoType.equals("svn")) {
+		if (scmURL.startsWith("scm:svn")) {
 			// assume it is SVN, takes the form: http://madura-rules.googlecode.com/svn/trunk
-			return new HistoryExtractorSVN(bareURL, subDir+baseName, null, null);
+			return new HistoryExtractorSVN(scmURL, subDir+baseName, null, null);
 		}
-		if (repoType.equals("git")) {
+		if (scmURL.startsWith("scm:git")) {
+			return new HistoryExtractorGit(scmURL, subDir+baseName);
 			// assume it is github, takes the form: https://api.github.com/repos/RogerParkinson/HeartMonitor/commits?path=README.md
 			// assume it is github, takes the form: https://github.com/RogerParkinson/HeartMonitor
 			// beanvalidation is the user name
-			URL url;
-			try {
-				url = new URL(bareURL);
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-				return null;
-			}
-			String host = url.getHost();
-			if (!host.startsWith("api.")) {
-				host = "api."+host;
-			}
-			String urlQuery = url.getPath();
-			String urlString = url.getProtocol()+"://"+host;
-			StringTokenizer st = new StringTokenizer(urlQuery,"/");
-			String name = st.nextToken();
-			String repo = st.nextToken();
-			return new HistoryExtractorGitHub(urlString, subDir+baseName,name,repo);
+//			URL url;
+//			try {
+//				url = new URL(bareURL);
+//			} catch (MalformedURLException e) {
+//				e.printStackTrace();
+//				return null;
+//			}
+//			String host = url.getHost();
+//			if (!host.startsWith("api.")) {
+//				host = "api."+host;
+//			}
+//			String urlQuery = url.getPath();
+//			String urlString = url.getProtocol()+"://"+host;
+//			StringTokenizer st = new StringTokenizer(urlQuery,"/");
+//			String name = st.nextToken();
+//			String repo = st.nextToken();
+//			return new HistoryExtractorGitHub(urlString, subDir+baseName,name,repo);
 		}
 		return new HistoryExtractorNOOP();
 	}

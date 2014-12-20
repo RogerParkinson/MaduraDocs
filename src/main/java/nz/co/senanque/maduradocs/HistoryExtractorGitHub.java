@@ -19,11 +19,18 @@
 package nz.co.senanque.maduradocs;
 
 import java.io.StringReader;
+import java.util.Collection;
 import java.util.List;
 
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tmatesoft.svn.core.SVNLogEntry;
+import org.tmatesoft.svn.core.SVNURL;
+import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
+import org.tmatesoft.svn.core.io.SVNRepository;
+import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
+import org.tmatesoft.svn.core.wc.SVNWCUtil;
 import org.xml.sax.InputSource;
 
 import retrofit.RequestInterceptor;
@@ -32,7 +39,11 @@ import retrofit.http.GET;
 import retrofit.http.Path;
 
 /**
- * @author roger
+ * Specifically handles Github.com but it doesn't use git directly. Instead it
+ * converts the url to an svn compatible one and uses svn protocol.
+ * This may only work with github.com.
+ * 
+ * @author Roger Parkinson
  * 
  */
 public class HistoryExtractorGitHub implements HistoryExtractor {
@@ -43,7 +54,8 @@ public class HistoryExtractorGitHub implements HistoryExtractor {
 	private final String m_url;
 	private final String m_path;
 	private final String m_name;
-	private final String m_repo;
+	private final String m_password;
+	private final String m_urlFinal;
 
 	static class Contributor {
 		String login;
@@ -103,51 +115,87 @@ public class HistoryExtractorGitHub implements HistoryExtractor {
 				@Path("repo") String repo);
 	}
 
-	protected HistoryExtractorGitHub(String url, String path, String name, String repo) {
+	protected HistoryExtractorGitHub(String url, String path, String name,
+			String password) {
 		m_url = url;
 		m_path = path;
 		m_name = name;
-		m_repo = repo;
+		m_password = password;
+		m_urlFinal = "https://"+url.substring(12).replace(':', '/').replace(".git", "/trunk/");
 	}
 
+	@SuppressWarnings("unchecked")
 	public InputSource getHistory() {
 
 		StringBuilder sb = new StringBuilder("<log>");
 
-		RequestInterceptor requestInterceptor = new RequestInterceptor() {
-			@Override
-			public void intercept(RequestFacade request) {
-				request.addQueryParam("path", m_path);
-			}
-		};
-		RestAdapter restAdapter = new RestAdapter.Builder().setServer(m_url)
-				.setRequestInterceptor(requestInterceptor).build();
+		long startRevision = 0;
+		long endRevision = -1; // HEAD (the latest) revision
 
-		// Create an instance of our GitHub API interface.
-		GitHub github = restAdapter.create(GitHub.class);
-
+		SVNRepository repository = null;
 		try {
-			List<CommitRecord> commits = github.commits(m_name,m_repo);
-			for (CommitRecord commitRecord : commits) {
-				if (StringUtils.isNotEmpty(commitRecord.getMessage())) {
+			repository = SVNRepositoryFactory.create(SVNURL
+					.parseURIEncoded(m_urlFinal));
+			ISVNAuthenticationManager authManager = SVNWCUtil
+					.createDefaultAuthenticationManager(m_name, m_password);
+			repository.setAuthenticationManager(authManager);
+			Collection<SVNLogEntry> logEntries = null;
+
+			logEntries = (Collection<SVNLogEntry>) repository.log(
+					new String[] { m_path }, null, startRevision, endRevision,
+					true, true);
+			for (SVNLogEntry logEntry : logEntries) {
+				if (StringUtils.isNotEmpty(logEntry.getMessage())) {
 					sb.append("<logentry>");
-					sb.append("<author>").append(commitRecord.getAuthor())
-							.append("</author>");
-					sb.append("<date>").append(commitRecord.getDate().toString())
-							.append("</date>");
-					sb.append("<msg>").append(commitRecord.getMessage().replace('\n', ' '))
-							.append("</msg>");
+					sb.append("<author>").append(logEntry.getAuthor()).append("</author>");
+					sb.append("<date>").append(logEntry.getDate().toString()).append("</date>");
+					sb.append("<msg>").append(logEntry.getMessage()).append("</msg>");
 					sb.append("</logentry>");
 				}
 			}
 		} catch (Exception e) {
-			log.warn("Failed to get Git history: ", e.getMessage());
+			log.warn("Failed to get SVN history: ", e.getMessage());
 		}
 		sb.append("</log>");
 
 		StringReader stringReader = new StringReader(sb.toString());
 		InputSource inputSource = new InputSource(stringReader);
 		return inputSource;
+
+//		RequestInterceptor requestInterceptor = new RequestInterceptor() {
+//			@Override
+//			public void intercept(RequestFacade request) {
+//				request.addQueryParam("path", m_path);
+//			}
+//		};
+//		RestAdapter restAdapter = new RestAdapter.Builder().setServer(m_url)
+//				.setRequestInterceptor(requestInterceptor).build();
+//
+//		// Create an instance of our GitHub API interface.
+//		GitHub github = restAdapter.create(GitHub.class);
+//
+//		try {
+//			List<CommitRecord> commits = github.commits(m_name,m_repo);
+//			for (CommitRecord commitRecord : commits) {
+//				if (StringUtils.isNotEmpty(commitRecord.getMessage())) {
+//					sb.append("<logentry>");
+//					sb.append("<author>").append(commitRecord.getAuthor())
+//							.append("</author>");
+//					sb.append("<date>").append(commitRecord.getDate().toString())
+//							.append("</date>");
+//					sb.append("<msg>").append(commitRecord.getMessage().replace('\n', ' '))
+//							.append("</msg>");
+//					sb.append("</logentry>");
+//				}
+//			}
+//		} catch (Exception e) {
+//			log.warn("Failed to get Git history: ", e.getMessage());
+//		}
+//		sb.append("</log>");
+//
+//		StringReader stringReader = new StringReader(sb.toString());
+//		InputSource inputSource = new InputSource(stringReader);
+//		return inputSource;
 	}
 
 }

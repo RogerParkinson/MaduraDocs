@@ -120,6 +120,14 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 	private String scratchDirectory;
 	
 	/**
+	 * Location of the subprojectDir.
+	 * 
+	 * @parameter
+	 * 
+	 */
+	private String subprojectDir;
+	
+	/**
 	 * Name of the sourceDoc.
 	 * @parameter
 	 * 
@@ -281,7 +289,7 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 //        String path = "src/MaduraDocs.xml";
 		
 		int l = getBaseDir().length();
-		String sourceSubDir = getSourceDir().substring(l+1);
+		String sourceSubDir = ((subprojectDir==null)?"":subprojectDir+"/")+getSourceDir().substring(l+1);
 
 		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor(scmURL, baseName+".xml",sourceSubDir);
 		history = historyExtractor.getHistory();

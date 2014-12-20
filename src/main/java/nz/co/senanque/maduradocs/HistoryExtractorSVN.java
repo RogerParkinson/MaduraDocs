@@ -42,6 +42,7 @@ public class HistoryExtractorSVN implements HistoryExtractor {
 			.getLogger(HistoryExtractorSVN.class);
 
 	private final String m_url;
+	private final String m_urlFinal;
 	private final String m_path;
 	private final String m_name;
 	private final String m_password;
@@ -52,26 +53,21 @@ public class HistoryExtractorSVN implements HistoryExtractor {
 		m_path = path;
 		m_password = password;
 		m_name = name;
-	}
-
-	protected HistoryExtractorSVN(String url, String path) {
-		m_url = url;
-		m_path = path;
-		m_password = null;
-		m_name = null;
+		m_urlFinal = url.substring(8);
 	}
 
 	@SuppressWarnings("unchecked")
 	public InputSource getHistory() {
-		long startRevision = 0;
-		long endRevision = -1; // HEAD (the latest) revision
 
 		StringBuilder sb = new StringBuilder("<log>");
+
+		long startRevision = 0;
+		long endRevision = -1; // HEAD (the latest) revision
 
 		SVNRepository repository = null;
 		try {
 			repository = SVNRepositoryFactory.create(SVNURL
-					.parseURIEncoded(m_url));
+					.parseURIEncoded(m_urlFinal));
 			ISVNAuthenticationManager authManager = SVNWCUtil
 					.createDefaultAuthenticationManager(m_name, m_password);
 			repository.setAuthenticationManager(authManager);
