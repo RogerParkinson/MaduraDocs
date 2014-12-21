@@ -31,6 +31,7 @@
 			<reference t="docbook" url="http://docbook.org/" />
 			<reference t="svnkit" url="http://www.svnkit.com/license.html" />
 			<reference t="slf4j" url="http://www.slf4j.org/license.html" />
+			<reference t="scm" url="https://issues.sonatype.org/browse/OSSRH-10330" />
 		</references>
 
 	</title>
@@ -320,7 +321,7 @@
 		forget to maintain it which makes your documents look less than professional.</p>
 		<p>MaduraDocs gives you the ability to build the change log from the commit comments on the xml file. It works differently depending on the source 
 		control system (SCM) you are using. We currently support Subversion and GitHub. Other SCMs can be added if they have a useable api. These
-		assume you have an SCM entry in your pom file including a url. Examples:</p>
+		assume you have an SCM entry in your pom file including a url. Examples:<referenceLink t="scm"/></p>
 		<code><![CDATA[
 <scm>
 	<connection>scm:svn:https://github.com/RogerParkinson/MaduraDocs/trunk/</connection>
