@@ -59,7 +59,7 @@ public class HistoryExtractorFactoryTest {
 		InputSource inputSource = historyExtractor.getHistory();
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
 		NodeList nodeList = doc.getDocumentElement().getChildNodes();
-		assertEquals(1,nodeList.getLength());
+		assertTrue(nodeList.getLength()>0);
 	}
 	@Test
 	public void testGetHistoryExtractorGitHubGIT3() throws Exception {
@@ -67,6 +67,14 @@ public class HistoryExtractorFactoryTest {
 		InputSource inputSource = historyExtractor.getHistory();
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
 		NodeList nodeList = doc.getDocumentElement().getChildNodes();
-		assertEquals(1,nodeList.getLength());
+		assertTrue(nodeList.getLength()>0);
+	}
+	@Test
+	public void testGetHistoryExtractorGitHubGIT4() throws Exception {
+		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("scm:git:ssh://github.com:RogerParkinson/madura-bundles.git", "madura-bundle.xml", "/madura-bundle/docs/");
+		InputSource inputSource = historyExtractor.getHistory();
+		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
+		NodeList nodeList = doc.getDocumentElement().getChildNodes();
+		assertTrue(nodeList.getLength()>0);
 	}
 }
