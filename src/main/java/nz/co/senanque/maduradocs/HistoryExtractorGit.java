@@ -123,6 +123,12 @@ public class HistoryExtractorGit implements HistoryExtractor {
 		if (m_url.startsWith("//")) {
 			j=2;
 		}
+		if (m_url.startsWith("//git@")) {
+			j=6;
+		}
+		if (i < 0) {
+			i = m_url.indexOf('/', j+1);
+		}
 		String host = m_url.substring(j,i);
 		if (host.equals("github.com")) {
 			host = "api."+host;

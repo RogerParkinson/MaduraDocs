@@ -8,7 +8,7 @@ public class HistoryExtractorGitTest {
 
 	@Test
 	public void testGetHistory() {
-		HistoryExtractorGit git = new HistoryExtractorGit("scm:git:git@github.com:RogerParkinson/MaduraUtils.git","/docs/madura-utils.xml");
+		HistoryExtractorGit git = new HistoryExtractorGit("scm:git:ssh://git@github.com/RogerParkinson/MaduraDocs.git","/docs/madura-utils.xml");
 		git.getHistory();
 	}
 
