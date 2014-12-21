@@ -119,7 +119,11 @@ public class HistoryExtractorGit implements HistoryExtractor {
 		// https://api.github.com/RogerParkinson/MaduraUtils.git
 
 		int i = m_url.indexOf(':');
-		String host = m_url.substring(0,i);
+		int j=0;
+		if (m_url.startsWith("//")) {
+			j=2;
+		}
+		String host = m_url.substring(j,i);
 		if (host.equals("github.com")) {
 			host = "api."+host;
 		}

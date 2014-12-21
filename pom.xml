@@ -29,8 +29,8 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:svn:https://github.com/RogerParkinson/MaduraDocs/trunk/</connection>
-		<developerConnection>scm:svn:https://github.com/RogerParkinson/MaduraDocs/trunk/</developerConnection>
+		<connection>scm:git:git://github.com/RogerParkinson/MaduraDocs/trunk/</connection>
+		<developerConnection>scm:git:git://github.com/RogerParkinson/MaduraDocs/trunk/</developerConnection>
 		<url>https://github.com/RogerParkinson/MaduraDocs/trunk/</url>
 	</scm>
 
