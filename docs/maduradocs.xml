@@ -323,7 +323,7 @@
 		assume you have an SCM entry in your pom file including a url. Examples:</p>
 		<code><![CDATA[
 scm:svn:https://github.com/RogerParkinson/MaduraDocs/trunk/
-scm:git:git@github.com:RogerParkinson/madura-bundles.git
+scm:git:git://github.com/RogerParkinson/MaduraDocs.git
 		]]></code>
 		<p>The first is using the svn protocol, the second is using git. Svn ought to work anywhere but we have only tried git with the
 		github.com site. It may not work elsewhere.</p>
