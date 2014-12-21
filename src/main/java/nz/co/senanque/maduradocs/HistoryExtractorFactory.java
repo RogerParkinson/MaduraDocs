@@ -18,6 +18,7 @@
  */
 package nz.co.senanque.maduradocs;
 
+import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -26,16 +27,16 @@ import org.codehaus.plexus.util.StringUtils;
  */
 public class HistoryExtractorFactory {
 	
-	static HistoryExtractor getHistoryExtractor(String scmURL, String baseName, String subDir) {
+	static HistoryExtractor getHistoryExtractor(String scmURL, String baseName, String subDir, Log log) {
 		
 		if (StringUtils.isEmpty(scmURL)) {
 			return new HistoryExtractorNOOP();
 		}
 		if (scmURL.startsWith("scm:svn")) {
-			return new HistoryExtractorSVN(scmURL, subDir+baseName, null, null);
+			return new HistoryExtractorSVN(scmURL, subDir+baseName, null, null,log);
 		}
 		if (scmURL.startsWith("scm:git")) {
-			return new HistoryExtractorGit(scmURL, subDir+baseName);
+			return new HistoryExtractorGit(scmURL, subDir+baseName,log);
 		}
 		return new HistoryExtractorNOOP();
 	}

@@ -21,6 +21,7 @@ package nz.co.senanque.maduradocs;
 import java.io.StringReader;
 import java.util.Collection;
 
+import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +39,7 @@ import org.xml.sax.InputSource;
  */
 public class HistoryExtractorSVN implements HistoryExtractor {
 
-	private static final Logger log = LoggerFactory
-			.getLogger(HistoryExtractorSVN.class);
+	private static Log log;
 
 	private final String m_url;
 	private final String m_urlFinal;
@@ -48,12 +48,13 @@ public class HistoryExtractorSVN implements HistoryExtractor {
 	private final String m_password;
 
 	protected HistoryExtractorSVN(String url, String path, String name,
-			String password) {
+			String password, Log log2) {
 		m_url = url;
 		m_path = path;
 		m_password = password;
 		m_name = name;
 		m_urlFinal = url.substring(8);
+		log = log2;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -86,7 +87,7 @@ public class HistoryExtractorSVN implements HistoryExtractor {
 				}
 			}
 		} catch (Exception e) {
-			log.warn("Failed to get SVN history: ", e.getMessage());
+			log.warn("Failed to get SVN history: ", e);
 		}
 		sb.append("</log>");
 

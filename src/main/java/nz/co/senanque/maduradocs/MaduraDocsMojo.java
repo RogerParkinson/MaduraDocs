@@ -291,7 +291,7 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 		int l = getBaseDir().length();
 		String sourceSubDir = ((subprojectDir==null)?"":subprojectDir+"/")+getSourceDir().substring(l+1);
 
-		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor(scmURL, baseName+".xml",sourceSubDir);
+		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor(scmURL, baseName+".xml",sourceSubDir,getLog());
 		history = historyExtractor.getHistory();
 		
 		File sourceFile = new File(getSourceDir()+File.separatorChar+baseName+".xml");

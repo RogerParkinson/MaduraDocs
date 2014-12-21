@@ -21,6 +21,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +40,7 @@ import retrofit.http.Path;
  */
 public class HistoryExtractorGit implements HistoryExtractor {
 
-	private static final Logger log = LoggerFactory
-			.getLogger(HistoryExtractorGit.class);
+	private static Log log;
 
 	private final String m_url;
 	private final String m_path;
@@ -110,10 +110,12 @@ public class HistoryExtractorGit implements HistoryExtractor {
 	/**
 	 * @param url eg scm:git:git@github.com:RogerParkinson/MaduraUtils.git
 	 * @param path eg /README.cmd
+	 * @param log2 
 	 */
-	protected HistoryExtractorGit(String url, String path) {
+	protected HistoryExtractorGit(String url, String path, Log log2) {
 		m_url = url.substring(12);
 		m_path = path;
+		log = log2;
 		
 		// Convert the given url into an https url which should look something like:
 		// https://api.github.com/RogerParkinson/MaduraUtils.git
@@ -176,7 +178,7 @@ public class HistoryExtractorGit implements HistoryExtractor {
 				}
 			}
 		} catch (Exception e) {
-			log.warn("Failed to get Git history: ", e.getMessage());
+			log.warn("Failed to get Git history: ", e);
 		}
 		sb.append("</log>");
 
