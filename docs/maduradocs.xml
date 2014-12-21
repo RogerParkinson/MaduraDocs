@@ -322,11 +322,21 @@
 		control system (SCM) you are using. We currently support Subversion and GitHub. Other SCMs can be added if they have a useable api. These
 		assume you have an SCM entry in your pom file including a url. Examples:</p>
 		<code><![CDATA[
-scm:svn:https://github.com/RogerParkinson/MaduraDocs/trunk/
-scm:git:ssh://github.com/RogerParkinson/MaduraDocs.git
+<scm>
+	<connection>scm:svn:https://github.com/RogerParkinson/MaduraDocs/trunk/</connection>
+	<developerConnection>scm:svn:https://github.com/RogerParkinson/MaduraDocs/trunk/</developerConnection>
+	<url>https://github.com/RogerParkinson/MaduraDocs/</url>
+</scm>
 		]]></code>
-		<p>The first is using the svn protocol, the second is using git. Svn ought to work anywhere but we have only tried git with the
-		github.com site. It may not work elsewhere.</p>
+		<p>That is for if you're using svn. If you're using git you need something like this:</p>
+		<code><![CDATA[
+<scm>
+	<connection>scm:git:ssh://git@github.com:RogerParkinson/MaduraDocs.git</connection>
+	<developerConnection>scm:git:https://github.com/RogerParkinson/MaduraDocs.git</developerConnection>
+	<url>https://github.com/RogerParkinson/MaduraDocs/</url>
+</scm>
+		]]></code>
+		<p>Svn ought to work anywhere' but we have only tried git with the github.com site. It may not work elsewhere.</p>
 		<p>If you are using a git repo with a sub project, ie the git repo holds the parent project and all the sub projects but you
 		have documentation to generate in one of the subprojects, you need to give the plugin a little more information to help it find
 		the xml file. This is the case with madura-bundle which is a sub project off madura-bundles and held in github. All that it needs is
@@ -452,7 +462,7 @@ scm:git:ssh://github.com/RogerParkinson/MaduraDocs.git
 		<table width="12cm">
 			<tw>12cm</tw>
 		<tr>
-			<th>6.0.6</th>
+			<th>6.1.0</th>
 		</tr>
         <tr>
             <td>Handling sub projects when fetching history.</td>
