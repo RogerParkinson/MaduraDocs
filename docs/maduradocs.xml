@@ -444,6 +444,16 @@
 		should make sure the style.xsl, MaduraHTLM.xsl and the images are copied to it.</p>
 		<p>To change the output directory just add a targetDir entry under the configuration.</p>
 		</h2>
+		<h2 t="Other Output Formats">
+		<p>There are two other output files generated as well as the PDF. These are a Markdown (md) and a txt file and they are left in the target
+		directory. These are somewhat specialised and, consequently, also somewhat limited. The md file can be used to make a README.md file suitable for use
+		in sites like github. It is just the first h1 tag of your documentation formatted for md rather than pdf or html. Not all the formatting features
+		are handled but most of them are and the ones that aren't are quietly ignored. It is likely you will want to edit it rather than use it directly
+		but if you are careful with your first h1 tag, making it a good but concise introduction to your project this will give you a reasonable
+		result.</p>
+		<p>The second format does much the same as the md format except it outputs text instead of md. The result is much more limited, for
+		example it cannot support images. We have yet to find a use for it.</p>
+		</h2>
 		</h1>
 		<a1 t="Licence">
 			<p>The code specific to MaduraDocs is licenced under the Apache Licence 2.0 <referenceLink t="Apache Licence 2.0"/>.</p>
@@ -462,6 +472,12 @@
 		<a1 t="Release Notes">
 		<table width="12cm">
 			<tw>12cm</tw>
+		<tr>
+			<th>6.2.0</th>
+		</tr>
+        <tr>
+            <td>Added md and txt formats.</td>
+        </tr>
 		<tr>
 			<th>6.1.0</th>
 		</tr>
