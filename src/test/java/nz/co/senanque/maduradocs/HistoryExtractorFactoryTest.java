@@ -51,7 +51,7 @@ public class HistoryExtractorFactoryTest {
 		InputSource inputSource = historyExtractor.getHistory();
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
 		NodeList nodeList = doc.getDocumentElement().getChildNodes();
-		assertEquals(1,nodeList.getLength());
+		assertEquals(2,nodeList.getLength());
 	}
 	@Test
 	public void testGetHistoryExtractorGitHubGIT2() throws Exception {

@@ -154,6 +154,7 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 			imagesDirectoryFile.mkdirs();
 		}
 		copyFile("MaduraHTML.xsl",sourceDirectoryFile);
+		copyFile("MaduraMD.xsl",sourceDirectoryFile);
 		copyFile("style.xsl",sourceDirectoryFile);
 		copyFile("rant.gif",imagesDirectoryFile);
 		copyFile("note.png",imagesDirectoryFile);
@@ -275,10 +276,145 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 		}
 		StringTokenizer st = new StringTokenizer(baseName,",");
 		while (st.hasMoreTokens()) {
-			processOneFile(st.nextToken());
+			String fileName = st.nextToken();
+			processOneFile(fileName);
+			processMDFile(fileName);
+			processTXTFile(fileName);
 		}
 	}
 		
+	private void processMDFile(String baseName) {
+		int i = baseName.indexOf('.');
+		if (i > -1) {
+			baseName = baseName.substring(0, i);
+		}
+		
+//        String url = "https://maduradocs.googlecode.com/svn/trunk";
+//        String path = "src/MaduraDocs.xml";
+		
+		int l = getBaseDir().length();
+		String sourceSubDir = ((subprojectDir==null)?"":subprojectDir+"/")+getSourceDir().substring(l+1);
+
+		File sourceFile = new File(getSourceDir()+File.separatorChar+baseName+".xml");
+		if (!sourceFile.exists()) {
+			// If there was no source file then create one and all the other bits in the sourcedir
+			createNewSources(baseName);
+		}
+		String mdFile = getTargetDir()+File.separatorChar+baseName+".md";
+		
+		DocumentBuilderFactory spf = DocumentBuilderFactory.newInstance();
+		spf.setNamespaceAware(true);
+		spf.setXIncludeAware(true);
+		try {
+			DocumentBuilder parser = spf.newDocumentBuilder();
+			parser.setEntityResolver(new EntityResolver(){
+
+				@Override
+				public InputSource resolveEntity(String publicId,
+						String systemId) throws SAXException, IOException {
+					return null;
+				}});
+			Document sourceDocument = parser.parse(sourceFile);
+		
+			InputStream xslFile = this.getClass().getResourceAsStream("MaduraMD.xsl");
+			OutputStream outputMD = new FileOutputStream(mdFile);
+			
+			TransformerFactory factory = TransformerFactory.newInstance();
+			factory.setURIResolver(new URIResolver(){
+
+				@Override
+				public Source resolve(String href, String base)
+						throws TransformerException {
+					File f = new File(getSourceDir()+File.separatorChar+href);
+					StreamSource ret;
+					try {
+						ret = new StreamSource(new FileInputStream(f));
+					} catch (FileNotFoundException e) {
+						return null;
+					}
+					return ret;
+				}});
+			StreamSource xslStream = new StreamSource(xslFile);
+			Transformer transformer = factory.newTransformer(xslStream);
+
+			transformer.setParameter("ProductVersion", artifactId+"-"+stripSnapshot(version));
+			transformer.setParameter("Company", company);
+			transformer.setParameter("Year", getYear());
+			transformer.setParameter("BaseDir", getSourceDir()+File.separatorChar);
+			Source in = new DOMSource(sourceDocument);
+			StreamResult out = new StreamResult(outputMD);
+			transformer.transform(in, out);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	private void processTXTFile(String baseName) {
+		int i = baseName.indexOf('.');
+		if (i > -1) {
+			baseName = baseName.substring(0, i);
+		}
+		
+//        String url = "https://maduradocs.googlecode.com/svn/trunk";
+//        String path = "src/MaduraDocs.xml";
+		
+		int l = getBaseDir().length();
+		String sourceSubDir = ((subprojectDir==null)?"":subprojectDir+"/")+getSourceDir().substring(l+1);
+
+		File sourceFile = new File(getSourceDir()+File.separatorChar+baseName+".xml");
+		if (!sourceFile.exists()) {
+			// If there was no source file then create one and all the other bits in the sourcedir
+			createNewSources(baseName);
+		}
+		String mdFile = getTargetDir()+File.separatorChar+baseName+".txt";
+		
+		DocumentBuilderFactory spf = DocumentBuilderFactory.newInstance();
+		spf.setNamespaceAware(true);
+		spf.setXIncludeAware(true);
+		try {
+			DocumentBuilder parser = spf.newDocumentBuilder();
+			parser.setEntityResolver(new EntityResolver(){
+
+				@Override
+				public InputSource resolveEntity(String publicId,
+						String systemId) throws SAXException, IOException {
+					return null;
+				}});
+			Document sourceDocument = parser.parse(sourceFile);
+		
+			InputStream xslFile = this.getClass().getResourceAsStream("MaduraTXT.xsl");
+			OutputStream outputMD = new FileOutputStream(mdFile);
+			
+			TransformerFactory factory = TransformerFactory.newInstance();
+			factory.setURIResolver(new URIResolver(){
+
+				@Override
+				public Source resolve(String href, String base)
+						throws TransformerException {
+					File f = new File(getSourceDir()+File.separatorChar+href);
+					StreamSource ret;
+					try {
+						ret = new StreamSource(new FileInputStream(f));
+					} catch (FileNotFoundException e) {
+						return null;
+					}
+					return ret;
+				}});
+			StreamSource xslStream = new StreamSource(xslFile);
+			Transformer transformer = factory.newTransformer(xslStream);
+
+			transformer.setParameter("ProductVersion", artifactId+"-"+stripSnapshot(version));
+			transformer.setParameter("Company", company);
+			transformer.setParameter("Year", getYear());
+			transformer.setParameter("BaseDir", getSourceDir()+File.separatorChar);
+			Source in = new DOMSource(sourceDocument);
+			StreamResult out = new StreamResult(outputMD);
+			transformer.transform(in, out);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	private void processOneFile(String baseName) {
 		int i = baseName.indexOf('.');
 		if (i > -1) {
