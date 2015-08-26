@@ -102,7 +102,7 @@
 	<xsl:value-of select="concat('**',text(),'**')" />
 	</xsl:template>
 	<xsl:template match="courier">
-		`<xsl:apply-templates />`
+	<xsl:value-of select="concat('`',text(),'`')" />
 	</xsl:template>
 	<xsl:template match="comment">
 	</xsl:template>
