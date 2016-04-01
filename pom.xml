@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>nz.co.senanque</groupId>
 	<artifactId>maduradocs</artifactId>
@@ -6,6 +7,11 @@
 	<version>6.2.1-SNAPSHOT</version>
 	<name>MaduraDocs</name>
 	<url>https://www.madurasoftware.com</url>
+	<organization>
+		<name>Prometheus Consulting</name>
+		<url>www.madurasoftware.com</url>
+	</organization>
+	<description>MaduraDocs generates a PDF file from an XML source file. It is a maven plugin, so it can be added to a maven project and the PDF will be generated as part of the build (the package phase).</description>
 	<licenses>
 		<license>
 			<name>Apache 2</name>
@@ -122,121 +128,91 @@
 		<defaultGoal>install</defaultGoal>
 		<plugins>
 			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<id>attach-artifacts</id>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<artifacts>
+						<artifact>
+							<file>${schema}</file>
+							<type>xsd</type>
+						</artifact>
+						<artifact>
+							<file>${pdf}</file>
+							<type>pdf</type>
+						</artifact>
+					</artifacts>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-plugin-plugin</artifactId>
+				<version>2.6</version>
 			</plugin>
 			<plugin>
 				<inherited>true</inherited>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.4.3</version>
+				<executions>
+					<execution>
+						<id>default-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>resources</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>default-testResources</id>
+						<phase>process-test-resources</phase>
+						<goals>
+							<goal>testResources</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>1.5</version>
-					<executions>
-						<execution>
-							<phase>package</phase>
-							<id>attach-artifacts</id>
-							<goals>
-								<goal>attach-artifact</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<artifacts>
-							<artifact>
-								<file>${schema}</file>
-								<type>xsd</type>
-							</artifact>
-							<artifact>
-								<file>${pdf}</file>
-								<type>pdf</type>
-							</artifact>
- 						</artifacts>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-plugin-plugin</artifactId>
-					<version>2.6</version>
-				</plugin>
-				<plugin>
-					<inherited>true</inherited>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>2.0.2</version>
-					<configuration>
-						<source>1.7</source>
-						<target>1.7</target>
-					</configuration>
-				</plugin>
-				<plugin>
-					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.4.3</version>
-					<executions>
-						<execution>
-							<id>default-resources</id>
-							<phase>process-resources</phase>
-							<goals>
-								<goal>resources</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>default-testResources</id>
-							<phase>process-test-resources</phase>
-							<goals>
-								<goal>testResources</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>2.2.1</version>
-					<executions>
-						<execution>
-							<id>attach-sources</id>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.9.1</version>
-					<executions>
-						<execution>
-							<id>attach-javadocs</id>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
 			<plugin>
 				<groupId>org.kuali.maven.plugins</groupId>
 				<artifactId>properties-maven-plugin</artifactId>
@@ -256,22 +232,58 @@
 					</execution>
 				</executions>
 			</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-gpg-plugin</artifactId>
-					<version>1.4</version>
-					<executions>
-						<execution>
-							<id>sign-artifacts</id>
-							<phase>verify</phase>
-							<goals>
-								<goal>sign</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.kuali.maven.plugins</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.1.9</version>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+						<configuration>
+							<locations>
+								<location>${HOME}/madura.properties</location>
+							</locations>
+							<quiet>true</quiet>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on 
+					the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -317,17 +329,25 @@
 										<ignore />
 									</action>
 								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.kuali.maven.plugins</groupId>
+										<artifactId>properties-maven-plugin</artifactId>
+										<versionRange>[1.1.9,)</versionRange>
+										<goals>
+											<goal>read-project-properties</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
-				
+
 			</plugins>
 		</pluginManagement>
 	</build>
-	<organization>
-		<name>Prometheus Consulting</name>
-		<url>www.madurasoftware.com</url>
-	</organization>
-	<description>MaduraDocs generates a PDF file from an XML source file. It is a maven plugin, so it can be added to a maven project and the PDF will be generated as part of the build (the package phase).</description>
 </project>
