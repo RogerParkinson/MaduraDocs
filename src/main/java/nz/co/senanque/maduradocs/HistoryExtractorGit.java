@@ -113,6 +113,15 @@ public class HistoryExtractorGit implements HistoryExtractor {
 	 * @param log2 
 	 */
 	protected HistoryExtractorGit(String url, String path, Log log2) {
+		if (log2 != null) {
+			log2.info("url: "+url+" path: "+path);
+		}
+		
+		int k = url.indexOf(".git/");
+		if (k > -1) {
+			path = url.substring(k+4)+"/"+path;
+		}
+
 		m_url = url.substring(12);
 		m_path = path;
 		log = log2;
@@ -157,6 +166,10 @@ public class HistoryExtractorGit implements HistoryExtractor {
 				request.addQueryParam("path", m_path);
 			}
 		};
+		if (log != null) {
+			log.info("url: "+m_urlFinal.toString());
+			log.info("path: "+m_path.toString());
+		}
 		RestAdapter restAdapter = new RestAdapter.Builder().setServer(m_urlFinal.toString())
 				.setRequestInterceptor(requestInterceptor).build();
 
