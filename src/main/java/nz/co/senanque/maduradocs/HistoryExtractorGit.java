@@ -23,8 +23,6 @@ import java.util.StringTokenizer;
 
 import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.util.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 
 import retrofit.RequestInterceptor;
@@ -113,9 +111,9 @@ public class HistoryExtractorGit implements HistoryExtractor {
 	 * @param log2 
 	 */
 	protected HistoryExtractorGit(String url, String path, Log log2) {
-		if (log2 != null) {
-			log2.info("url: "+url+" path: "+path);
-		}
+//		if (log2 != null) {
+//			log2.info("url: "+url+" path: "+path);
+//		}
 		
 		int k = url.indexOf(".git/");
 		if (k > -1) {
@@ -166,10 +164,10 @@ public class HistoryExtractorGit implements HistoryExtractor {
 				request.addQueryParam("path", m_path);
 			}
 		};
-		if (log != null) {
-			log.info("url: "+m_urlFinal.toString());
-			log.info("path: "+m_path.toString());
-		}
+//		if (log != null) {
+//			log.info("url: "+m_urlFinal.toString());
+//			log.info("path: "+m_path.toString());
+//		}
 		RestAdapter restAdapter = new RestAdapter.Builder().setServer(m_urlFinal.toString())
 				.setRequestInterceptor(requestInterceptor).build();
 
