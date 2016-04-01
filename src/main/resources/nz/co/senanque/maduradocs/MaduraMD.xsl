@@ -71,17 +71,17 @@
 
 
 	<xsl:template match="h2">
-		<xsl:text>&#xa;</xsl:text>##<xsl:value-of select="@t" />##
+		<xsl:text>&#xa;</xsl:text><xsl:text>&#xd;</xsl:text>##<xsl:value-of select="@t" />##
 		<xsl:apply-templates />
 	</xsl:template>
 
 	<xsl:template match="h3">
-		<xsl:text>&#xa;</xsl:text>###<xsl:value-of select="@t" />###
+		<xsl:text>&#xa;</xsl:text><xsl:text>&#xd;</xsl:text>###<xsl:value-of select="@t" />###
 		<xsl:apply-templates />
 	</xsl:template>
 
 	<xsl:template match="h4">
-		<xsl:text>&#xa;</xsl:text>####<xsl:value-of select="@t" />####
+		<xsl:text>&#xa;</xsl:text><xsl:text>&#xd;</xsl:text>####<xsl:value-of select="@t" />####
 		<xsl:apply-templates />
 	</xsl:template>
 
@@ -96,13 +96,13 @@
 <xsl:text>&#xa;</xsl:text><xsl:text>&#xa;</xsl:text><xsl:apply-templates />
 	</xsl:template>
 	<xsl:template match="emph">
-	<xsl:value-of select="concat('*',text(),'*')" />
+	<xsl:value-of select="concat(' *',text(),'* ')" />
 	</xsl:template>
 	<xsl:template match="bold">
-	<xsl:value-of select="concat('**',text(),'**')" />
+	<xsl:value-of select="concat(' **',text(),'** ')" />
 	</xsl:template>
 	<xsl:template match="courier">
-	<xsl:value-of select="concat('`',text(),'`')" />
+	<xsl:value-of select="concat(' `',text(),'` ')" />
 	</xsl:template>
 	<xsl:template match="comment">
 	</xsl:template>
@@ -149,10 +149,10 @@
           	<xsl:param name="content">2007</xsl:param>
           	<xsl:for-each select="key('references',$content)">
             	<xsl:if test="string-length(@url) &gt; 0">
-				<xsl:number format="[[1]]" level="any" from="/" count="reference"/><xsl:value-of select="concat('(',@url,')')" />
+				<xsl:value-of select="concat('[',$content,']')" /><xsl:value-of select="concat('(',@url,')')" />
 		</xsl:if>
             	<xsl:if test="string-length(@url) &lt;= 0">
-				<xsl:number format="[[1]]" level="any" from="/" count="reference"/>(<xsl:value-of select="concat('#reference.',$content)" />)
+				<xsl:value-of select="concat('[',$content,']')" />
 		</xsl:if>
 		<xsl:text> </xsl:text>
 		</xsl:for-each>
@@ -162,7 +162,7 @@
 		![<xsl:value-of select="text()"/>](docs/<xsl:value-of select="@href"/>)
 	</xsl:template>
 	<xsl:template match="code">
-		<xsl:text>&#xa;</xsl:text><xsl:value-of select="concat('```',text(),'&#xa;```')" />
+		<xsl:text>&#xa;</xsl:text><xsl:text>&#xd;</xsl:text><xsl:value-of select="concat('```',text(),'&#xa;```')" />
 	</xsl:template>
 
 
