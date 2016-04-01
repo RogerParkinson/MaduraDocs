@@ -473,6 +473,15 @@
 		<table width="12cm">
 			<tw>12cm</tw>
 		<tr>
+			<th>6.2.1</th>
+		</tr>
+        <tr>
+            <td>Fixed problem with fetching history from multi module git projects.</td>
+        </tr>
+        <tr>
+            <td>Fixed several issues with the generated markdown files.</td>
+        </tr>
+		<tr>
 			<th>6.2.0</th>
 		</tr>
         <tr>
