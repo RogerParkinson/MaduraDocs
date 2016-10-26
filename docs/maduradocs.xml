@@ -473,6 +473,12 @@
 		<table width="12cm">
 			<tw>12cm</tw>
 		<tr>
+			<th>6.2.2</th>
+		</tr>
+        <tr>
+            <td>Rebuilt with Java 1.8. Updated Xalan dependency to suppress benign error message.</td>
+        </tr>
+		<tr>
 			<th>6.2.1</th>
 		</tr>
         <tr>
