@@ -1,7 +1,7 @@
 MaduraDocs
 ==
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/nz.co.senanque/MaduraDocs/badge.svg)](http://mvnrepository.com/artifact/nz.co.senanque/maduradocs)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/nz.co.senanque/maduradocs/badge.svg)](http://mvnrepository.com/artifact/nz.co.senanque/maduradocs)
 
 [![build_status](https://travis-ci.org/RogerParkinson/MaduraDocs.svg?branch=master)](https://travis-ci.org/RogerParkinson/MaduraDocs)
 
