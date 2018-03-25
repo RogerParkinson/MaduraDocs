@@ -25,7 +25,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-public class HistoryExtractorFactoryTest {
+public class HistoryExtractorFactoryIT {
 	
 	// tests are marked ignored because they depend on external stability which we cannot guarantee.
 
