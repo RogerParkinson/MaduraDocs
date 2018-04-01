@@ -50,7 +50,7 @@ public class MaduraDocsMojoGenerateTest {
 		MavenXpp3Reader r = new MavenXpp3Reader();
 		Model model = r.read(new FileReader(new File("pom.xml")));
 		MaduraDocsMojo maduraDocsMojo = new MaduraDocsMojo();
-		maduraDocsMojo.setSourceDir("docs/");
+		maduraDocsMojo.setSourceDir("./docs/");
 		maduraDocsMojo.setSourceDoc("maduradocs.xml");
 		maduraDocsMojo.setScratchDirectory("target/scratchdocs/");
 		maduraDocsMojo.setCompany(model.getOrganization().getName());
@@ -61,6 +61,7 @@ public class MaduraDocsMojoGenerateTest {
 		maduraDocsMojo.setArtifactId(model.getArtifactId());
 		maduraDocsMojo.setProjectName(model.getName());
 		maduraDocsMojo.setVersion(model.getVersion());
+		maduraDocsMojo.setScmURL("scm:git:git@github.com:RogerParkinson/MaduraDocs.git");
 		maduraDocsMojo.execute();
 	}
 }

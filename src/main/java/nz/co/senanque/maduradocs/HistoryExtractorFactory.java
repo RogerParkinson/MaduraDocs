@@ -29,16 +29,21 @@ public class HistoryExtractorFactory {
 	
 	static HistoryExtractor getHistoryExtractor(String scmURL, String baseName, String subDir, Log log) {
 		
+		log.info("scmURL: "+scmURL+" baseName: "+baseName+" subDir: "+subDir);
+		HistoryExtractor ret = null;
+		
 		if (StringUtils.isEmpty(scmURL)) {
-			return new HistoryExtractorNOOP();
+			ret = new HistoryExtractorNOOP();
+		} else {
+			if (scmURL.startsWith("scm:svn")) {
+				ret = new HistoryExtractorSVN(scmURL, subDir+baseName, null, null,log);
+			}
+			if (scmURL.startsWith("scm:git")) {
+				ret = new HistoryExtractorGit(scmURL, subDir+baseName,log);
+			}
 		}
-		if (scmURL.startsWith("scm:svn")) {
-			return new HistoryExtractorSVN(scmURL, subDir+baseName, null, null,log);
-		}
-		if (scmURL.startsWith("scm:git")) {
-			return new HistoryExtractorGit(scmURL, subDir+baseName,log);
-		}
-		return new HistoryExtractorNOOP();
+		log.info("HistoryExtractor: "+ret);
+		return ret;
 	}
 	
 }

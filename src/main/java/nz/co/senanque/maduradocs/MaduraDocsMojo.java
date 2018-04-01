@@ -55,6 +55,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -242,6 +243,17 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 		getLog().info("using maduradocs plugin version "+pluginVersion);
 
 	}
+	
+	private String getSCMURL(MavenProject project) {
+		String ret = project.getModel().getScm().getConnection();
+		if (StringUtils.isEmpty(scmURL)) {
+			MavenProject parent = project.getParent();
+			if (parent != null) {
+				ret = project.getModel().getScm().getConnection();
+			}
+		}
+		return ret;
+	}
 
 	public void executeWithLogging() throws MojoExecutionException, MojoFailureException {
 		
@@ -258,8 +270,7 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 			company="";
 			try {
 				company = project.getModel().getOrganization().getName();
-//				scmURL = project.getModel().getScm().getUrl();
-				scmURL = project.getModel().getScm().getConnection();
+				scmURL = getSCMURL(project);
 			} catch (Exception e1) {
 				company="Set Organization in POM file";
 			}
@@ -425,7 +436,8 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 //        String path = "src/MaduraDocs.xml";
 		
 		int l = getBaseDir().length();
-		String sourceSubDir = ((subprojectDir==null)?"":subprojectDir+"/")+getSourceDir().substring(l+1);
+		String sourceSubDir = ((subprojectDir==null)?"":subprojectDir+"/")+getSourceDir().substring(l);
+		log.info("sourceSubDir: "+sourceSubDir);
 
 		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor(scmURL, baseName+".xml",sourceSubDir,getLog());
 //		getLog().info("History Extractor: "+historyExtractor.getClass().getSimpleName());
@@ -640,6 +652,10 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 
 	protected void setBaseDir(String baseDir) {
 		this.baseDir = baseDir;
+	}
+
+	public void setScmURL(String scmURL) {
+		this.scmURL = scmURL;
 	}
 
 }

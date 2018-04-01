@@ -111,9 +111,9 @@ public class HistoryExtractorGit implements HistoryExtractor {
 	 * @param log2 
 	 */
 	protected HistoryExtractorGit(String url, String path, Log log2) {
-//		if (log2 != null) {
-//			log2.info("url: "+url+" path: "+path);
-//		}
+		if (log2 != null) {
+			log2.info("url: "+url+" path: "+path);
+		}
 		
 		int k = url.indexOf(".git/");
 		if (k > -1) {

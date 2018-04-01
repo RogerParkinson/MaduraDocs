@@ -19,6 +19,8 @@ import static org.junit.Assert.*;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -27,11 +29,22 @@ import org.xml.sax.InputSource;
 
 public class HistoryExtractorFactoryIT {
 	
+	private Log log;
+	public Log getLog()
+    {
+        if ( log == null )
+        {
+            log = new SystemStreamLog();
+        }
+
+        return log;
+    }
+
 	// tests are marked ignored because they depend on external stability which we cannot guarantee.
 
 	@Test @Ignore // this one doesn't work but I no longer care about googlecode
 	public void testGetHistoryExtractorSVN() throws Exception {
-		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("scm:svn:https://maduradocs.googlecode.com/svn/trunk", "MaduraDocs.xml", "/src/",null);
+		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("scm:svn:https://maduradocs.googlecode.com/svn/trunk", "MaduraDocs.xml", "/src/",getLog());
 		InputSource inputSource = historyExtractor.getHistory();
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
 		NodeList nodeList = doc.getDocumentElement().getChildNodes();
@@ -39,7 +52,7 @@ public class HistoryExtractorFactoryIT {
 	}
 	@Test
 	public void testGetHistoryExtractorGitHubSVN() throws Exception {
-		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("scm:svn:https://github.com/RogerParkinson/MaduraDocs/trunk/", "README.md", "/",null);
+		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("scm:svn:https://github.com/RogerParkinson/MaduraDocs/trunk/", "README.md", "/",getLog());
 		InputSource inputSource = historyExtractor.getHistory();
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
 		NodeList nodeList = doc.getDocumentElement().getChildNodes();
@@ -47,7 +60,7 @@ public class HistoryExtractorFactoryIT {
 	}
 //	@Test
 //	public void testGetHistoryExtractorGitHubGIT() throws Exception {
-//		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("scm:git:git@github.com:RogerParkinson/MaduraDocs.git", "README.md", "/",null);
+//		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("scm:git:git@github.com:RogerParkinson/MaduraDocs.git", "README.md", "/",getLog());
 //		InputSource inputSource = historyExtractor.getHistory();
 //		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
 //		NodeList nodeList = doc.getDocumentElement().getChildNodes();
@@ -55,7 +68,7 @@ public class HistoryExtractorFactoryIT {
 //	}
 	@Test
 	public void testGetHistoryExtractorGitHubGIT2() throws Exception {
-		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("scm:git:git@github.com:RogerParkinson/madura-bundles.git", "madura-bundle.xml", "/madura-bundle/docs/",null);
+		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("scm:git:git@github.com:RogerParkinson/madura-bundles.git", "madura-bundle.xml", "/madura-bundle/docs/",getLog());
 		InputSource inputSource = historyExtractor.getHistory();
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
 		NodeList nodeList = doc.getDocumentElement().getChildNodes();
@@ -63,7 +76,7 @@ public class HistoryExtractorFactoryIT {
 	}
 	@Test
 	public void testGetHistoryExtractorGitHubGIT3() throws Exception {
-		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("scm:git:git://github.com:RogerParkinson/madura-bundles.git", "madura-bundle.xml", "/madura-bundle/docs/",null);
+		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("scm:git:git://github.com:RogerParkinson/madura-bundles.git", "madura-bundle.xml", "/madura-bundle/docs/",getLog());
 		InputSource inputSource = historyExtractor.getHistory();
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
 		NodeList nodeList = doc.getDocumentElement().getChildNodes();
@@ -71,7 +84,7 @@ public class HistoryExtractorFactoryIT {
 	}
 	@Test
 	public void testGetHistoryExtractorGitHubGIT4() throws Exception {
-		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("scm:git:ssh://github.com:RogerParkinson/madura-bundles.git", "madura-bundle.xml", "/madura-bundle/docs/",null);
+		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("scm:git:ssh://github.com:RogerParkinson/madura-bundles.git", "madura-bundle.xml", "/madura-bundle/docs/",getLog());
 		InputSource inputSource = historyExtractor.getHistory();
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
 		NodeList nodeList = doc.getDocumentElement().getChildNodes();
