@@ -250,6 +250,9 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 			MavenProject parent = project.getParent();
 			if (parent != null) {
 				ret = project.getModel().getScm().getConnection();
+				int j = ret.indexOf(".git/");
+				ret = ret.substring(0,j+5);
+				log.info("parent url: "+ret);
 			}
 		}
 		return ret;
