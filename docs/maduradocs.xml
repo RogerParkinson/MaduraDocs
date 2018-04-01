@@ -473,6 +473,12 @@
 		<table width="12cm">
 			<tw>12cm</tw>
 		<tr>
+			<th>6.3.2</th>
+		</tr>
+        <tr>
+            <td>Fixed a problem with getting changelogs from multi-module projects.</td>
+        </tr>
+		<tr>
 			<th>6.3.0</th>
 		</tr>
         <tr>
