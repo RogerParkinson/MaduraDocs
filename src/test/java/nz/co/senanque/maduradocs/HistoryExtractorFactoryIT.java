@@ -90,4 +90,12 @@ public class HistoryExtractorFactoryIT {
 		NodeList nodeList = doc.getDocumentElement().getChildNodes();
 		assertTrue(nodeList.getLength()>0);
 	}
+	@Test
+	public void testGetHistoryExtractorGitHubGIT5() throws Exception {
+		HistoryExtractor historyExtractor = HistoryExtractorFactory.getHistoryExtractor("scm:git:git@github.com:RogerParkinson/weblogic-jndi-startup.git", "weblogic-jndi-startup.xml", "/weblogic-jndi-startup/docs/",getLog());
+		InputSource inputSource = historyExtractor.getHistory();
+		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
+		NodeList nodeList = doc.getDocumentElement().getChildNodes();
+		assertTrue(nodeList.getLength()>0);
+	}
 }

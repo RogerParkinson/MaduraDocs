@@ -246,7 +246,8 @@ public class MaduraDocsMojo extends AbstractLoggingMojo {
 	
 	private String getSCMURL(MavenProject project) {
 		String ret = project.getModel().getScm().getConnection();
-		if (StringUtils.isEmpty(scmURL)) {
+//		getLog().info("connection: "+ret);
+		if (StringUtils.isEmpty(ret)) {
 			MavenProject parent = project.getParent();
 			if (parent != null) {
 				ret = project.getModel().getScm().getConnection();
