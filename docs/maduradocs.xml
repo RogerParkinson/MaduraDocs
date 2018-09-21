@@ -473,6 +473,12 @@
 		<table width="12cm">
 			<tw>12cm</tw>
 		<tr>
+			<th>6.3.3</th>
+		</tr>
+        <tr>
+            <td>Fixed a problem with scm.</td>
+        </tr>
+		<tr>
 			<th>6.3.2</th>
 		</tr>
         <tr>
