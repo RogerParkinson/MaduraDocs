@@ -3,7 +3,7 @@ name: Java CI RELEASE
 on:
   push:
     tags:
-      - *-RELEASE
+      - **
 
 jobs:
   release:
@@ -19,5 +19,5 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
       - name: Build with Maven
-        run: mvn versions:set -DnewVersion=${{ inputs.tags }} && run mvn clean deploy -DskipTests=true -B -U
+        run: echo ${{ inputs.tags }} && mvn versions:set -DnewVersion=${{ inputs.tags }} && run mvn clean deploy -DskipTests=true -B -U
         
