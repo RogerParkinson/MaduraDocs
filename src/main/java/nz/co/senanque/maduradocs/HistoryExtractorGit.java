@@ -168,7 +168,7 @@ public class HistoryExtractorGit implements HistoryExtractor {
 //			log.info("url: "+m_urlFinal.toString());
 //			log.info("path: "+m_path.toString());
 //		}
-		RestAdapter restAdapter = new RestAdapter.Builder().setServer(m_urlFinal.toString())
+		RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(m_urlFinal.toString())
 				.setRequestInterceptor(requestInterceptor).build();
 
 		// Create an instance of our GitHub API interface.

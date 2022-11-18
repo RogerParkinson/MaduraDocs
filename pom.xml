@@ -3,7 +3,7 @@
 	<groupId>nz.co.senanque</groupId>
 	<artifactId>maduradocs</artifactId>
 	<packaging>maven-plugin</packaging>
-	<version>6.3.3</version>
+	<version>6.3.4-SNAPSHOT</version>
 	<name>MaduraDocs</name>
 	<url>https://www.madurasoftware.com</url>
 	<organization>
@@ -114,7 +114,7 @@
 		<dependency>
 			<groupId>com.squareup.retrofit</groupId>
 			<artifactId>retrofit</artifactId>
-			<version>1.2.2</version>
+			<version>1.9.0</version>
 		</dependency>
 		<dependency>
 			<groupId>xalan</groupId>
