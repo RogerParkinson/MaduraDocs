@@ -1,9 +1,9 @@
-name: Java CI RELEASE
+name: Release
 
 on:
   push:
     tags:
-      - v1.**
+      - v**
 
 jobs:
   release:
