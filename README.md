@@ -3,7 +3,7 @@ MaduraDocs
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/nz.co.senanque/maduradocs/badge.svg)](http://mvnrepository.com/artifact/nz.co.senanque/maduradocs)
 
-![build_status](https://github.com/RogerParkinson/MaduraDocs/actions/workflows/release.yaml/badge.svg)
+[![Publish to Maven Central](https://github.com/RogerParkinson/MaduraDocs/actions/workflows/release.yaml/badge.svg)](https://github.com/RogerParkinson/MaduraDocs/actions/workflows/release.yaml)
 
 MaduraDocs generates a PDF file from an XML source file. It is a [maven](https://maven.apache.org/) plugin, so it can be added to a maven project and the PDF will be generated as part of the build (the package phase). The advantages of generating documents this way are:
 
